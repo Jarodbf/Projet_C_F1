@@ -8,6 +8,8 @@ struct F1 {
         char statut; //S=stand O=out E=enCourse
 }
 
+typedef struct F1 struc_voiture;
+
 int généTemp (){
 	srand(time(NULL));
 	for(int i=0;i<20;i++)
@@ -24,7 +26,6 @@ F44.temp[1] = généTemp();
 F44.temp[2] = généTemp();
 F44.temp[3] = F44.temp[0]+F44.temp[1]+F44.temp[2];
 	
-struct F1 struc_voiture;
 struc_voiture voiture[20];
 voiture[0].id = "F44";
 voiture[0].temp[0] = généTemp();
