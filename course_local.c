@@ -24,8 +24,8 @@ F44.temp[2] = généTemp();
 F44.temp[3] = F44.temp[0]+F44.temp[1]+F44.temp[2];
 	
 struct F1 voiture;
-voiture[F44].temp[0] = généTemp();
-voiture[F44].temp[1] = généTemp();
-voiture[F44].temp[2] = généTemp();
-voiture[F44].temp[3] = voiture[F44].temp[0]+voiture[F44].temp[1]+voiture[F44].temp[2];
+voiture["F44"].temp[0] = généTemp();
+voiture["F44"].temp[1] = généTemp();
+voiture["F44"].temp[2] = généTemp();
+voiture["F44"].temp[3] = voiture[F44].temp[0]+voiture[F44].temp[1]+voiture[F44].temp[2];
 }
