@@ -18,8 +18,8 @@ return r;
 int main()
 {
 struct F1 F44;
-F44.temp[0] = généTemp
-F44.temp[1] = généTemp
-F44.temp[2] = généTemp
-F44.temp[4] = F44.temp[0]+F44.temp[1]+F44.temp[2]
+F44.temp[0] = généTemp();
+F44.temp[1] = généTemp();
+F44.temp[2] = généTemp();
+F44.temp[4] = F44.temp[0]+F44.temp[1]+F44.temp[2];
 }
