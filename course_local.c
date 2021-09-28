@@ -20,11 +20,11 @@ return r;
 }
 int main()
 {
-struct F1 F44;
+/*struct F1 F44;
 F44.temp[0] = généTemp();
 F44.temp[1] = généTemp();
 F44.temp[2] = généTemp();
-F44.temp[3] = F44.temp[0]+F44.temp[1]+F44.temp[2];
+F44.temp[3] = F44.temp[0]+F44.temp[1]+F44.temp[2];*/
 	
 struc_voiture voiture[20];
 voiture[0].id = "F44";
