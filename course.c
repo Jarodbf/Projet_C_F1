@@ -10,20 +10,21 @@ struct F1 {
 };
 struct F1 voiture[20];
 
-void geneTemp (int x){
+int geneTemp (){
 	int r;
-	srand(time(NULL));
-	for(int i=0;i<3;i++)
-        {
-        r = (rand()%16)+25;
-		voiture[x].temp[i] = r;
-        }
+    r = (rand()%16)+25;
+return r;
 }
 int main()
 {
+srand(time(NULL));
 
-geneTemp(0);
-geneTemp(1);
+for(int i=0;i<3;i++)
+{
+voiture[0].temp[i] = geneTemp();	
+voiture[1].temp[i] = geneTemp();
+
+}
 
 strcpy(voiture[0].id,"F44");
 voiture[0].temp[3] = voiture[0].temp[0]+voiture[0].temp[1]+voiture[0].temp[2];
