@@ -13,7 +13,7 @@ struct F1 {
 float r=0;
 
 float geneTemp (){
-	srand(time(NULL));
+	sdrand(time(NULL));
 	for(int i=0;i<20;i++)
         {
         r = (rand()%16)+25;
