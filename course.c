@@ -8,27 +8,28 @@ struct F1 {
 	int temp[4];
 	char statut; //S=stand O=out E=enCourse
 };
+struct F1 voiture[20];
 
-
-float r=0;
-
-float geneTemp (){
-	sdrand(time(NULL));
-	for(int i=0;i<20;i++)
+void geneTemp (int x){
+	int r;
+	srand(time(NULL));
+	for(int i=0;i<3;i++)
         {
         r = (rand()%16)+25;
+		voiture[x].temp[i] = r;
         }
-return r;
 }
 int main()
 {
 
-struct F1 voiture[20];
+geneTemp(0);
+geneTemp(1);
+
 strcpy(voiture[0].id,"F44");
-voiture[0].temp[0] = geneTemp();
-voiture[0].temp[1] = geneTemp();
-voiture[0].temp[2] = geneTemp();
 voiture[0].temp[3] = voiture[0].temp[0]+voiture[0].temp[1]+voiture[0].temp[2];
 printf("%s \n%d %d %d %d\n",voiture[0].id,voiture[0].temp[0],voiture[0].temp[1],voiture[0].temp[2],voiture[0].temp[3]);
+strcpy(voiture[1].id,"F45");
+voiture[1].temp[3] = voiture[1].temp[0]+voiture[1].temp[1]+voiture[1].temp[2];
+printf("%s \n%d %d %d %d\n",voiture[1].id,voiture[1].temp[0],voiture[1].temp[1],voiture[1].temp[2],voiture[1].temp[3]);
 
 }
