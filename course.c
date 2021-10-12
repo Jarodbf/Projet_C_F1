@@ -42,21 +42,29 @@ for(int i=0;i<T;i++) //tour
     {
         for(int k=0;k<V;k++)//voiture
         {
-            voiture[k].temp[j] = geneTemp();
-            /*tempT=geneTemp();
-            if(tempT>voiture[k].temp[j]){
-               voiture[k].temp[j] = tempT();
-            }*/
+		if(i==0){
+           		voiture[k].temp[j] = geneTemp();
+		}
+		else{
+			tempT=geneTemp();
+			if(tempT>voiture[k].temp[j]){
+			voiture[k].temp[j] = tempT();
+			}
+		}
         }
     }
 
     for(int k=0;k<V;k++)//comptage temps tot
     {
-        voiture[k].temp[3] = voiture[k].temp[0]+voiture[k].temp[1]+voiture[k].temp[2];
-        /*tempT = voiture[k].temp[0]+voiture[k].temp[1]+voiture[k].temp[2];
-        if(tempT>voiture[k].temp[3]){
-            voiture[k].temp[3] = tempT;
-        }*/
+	    if(i==0){
+		voiture[k].temp[3] = voiture[k].temp[0]+voiture[k].temp[1]+voiture[k].temp[2];
+	    }
+	    else{
+		tempT = voiture[k].temp[0]+voiture[k].temp[1]+voiture[k].temp[2];
+		if(tempT>voiture[k].temp[3]){
+		    voiture[k].temp[3] = tempT;
+		}
+       	 }
     }
 }
 afficheTab();
