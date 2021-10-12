@@ -38,13 +38,13 @@ int * childRand()
             return tab;
 }
 
-
+clock_t clock(void);
 
 int main()
 {
 pipe(p);
 
-srand(time(NULL));
+srand(clock());
     //for(int i=0;i<2;i++) // loop will run n times (n=5)
     //{
         if(fork() == 0)
