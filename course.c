@@ -8,23 +8,23 @@
 
 struct F1 {
 	char id[3];
-	int temp[4];
+	float temp[4];
 	char statut; //S=stand O=out E=enCourse
 };
 
 struct F1 voiture[V];
 
-int geneTemp (){
-	int r;
-    r = (rand()%16)+25;
-return r;
+float geneTemp (){
+	float r;
+    r = (((rand()*1000)%16000)+25000);
+return r/1000;
 }
 
 void afficheTab() {
 printf(" IDV | BS1 | BS2 | BS3 | BT \n\n");
 for(int k=0;k<V;k++)//voiture
     {
-       printf(" %s | %3d | %3d | %3d | %3d |\n",voiture[k].id,voiture[k].temp[0],voiture[k].temp[1],voiture[k].temp[2],voiture[k].temp[3]);
+       printf(" %s | %3.2f | %3.2f | %3.2f | %2d.%d |\n",voiture[k].id,voiture[k].temp[0],voiture[k].temp[1],voiture[k].temp[2],((int)voiture[k].temp[3]/60),((int)voiture[k].temp[3]%60));
     }
 }
 
@@ -35,7 +35,7 @@ srand(time(NULL));
 strcpy(voiture[0].id,"F44");
 strcpy(voiture[1].id,"F45");
 
-int tempT;
+float tempT;
 for(int i=0;i<T;i++) //tour
 {
     for(int j=0;j<3;j++)// secteurs
@@ -47,8 +47,9 @@ for(int i=0;i<T;i++) //tour
 		}
 		else{
 			tempT=geneTemp();
+			printf("voiture: %d segment: %d Temps :%.2f\n",k,j,tempT);
 			if(tempT>voiture[k].temp[j]){
-			voiture[k].temp[j] = tempT();
+			voiture[k].temp[j] = tempT;
 			}
 		}
         }
