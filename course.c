@@ -16,7 +16,7 @@ struct F1 voiture[V];
 
 float geneTemp (){
 	float r;
-    r = (((rand()*1000)%16000)+25000);
+    r = (((rand())%16000)+25000);
 return r/1000;
 }
 
@@ -24,7 +24,7 @@ void afficheTab() {
 printf(" IDV | BS1 | BS2 | BS3 | BT \n\n");
 for(int k=0;k<V;k++)//voiture
     {
-       printf(" %s | %3.2f | %3.2f | %3.2f | %2d.%d |\n",voiture[k].id,voiture[k].temp[0],voiture[k].temp[1],voiture[k].temp[2],((int)voiture[k].temp[3]/60),((int)voiture[k].temp[3]%60));
+       printf(" %s | %3.2fs | %3.2fs | %3.2fs | %2dm%ds |\n",voiture[k].id,voiture[k].temp[0],voiture[k].temp[1],voiture[k].temp[2],((int)voiture[k].temp[3]/60),((int)voiture[k].temp[3]%60));
     }
 }
 
