@@ -3,11 +3,11 @@
 #include <stdlib.h>
 #include <string.h>
 
-# define V  2
+# define V  20
 # define T  5
 
 struct F1 {
-	char id[3];
+	int id;
 	float temp[4];
 	char statut; //S=stand O=out E=enCourse
 };
@@ -21,10 +21,10 @@ return r/1000;
 }
 
 void afficheTab() {
-printf(" IDV | BS1 | BS2 | BS3 | BT \n\n");
+printf(" IDV |  BS1   |  BS2   |  BS3   |  BT   |\n\n");
 for(int k=0;k<V;k++)//voiture
     {
-       printf(" %s | %3.2fs | %3.2fs | %3.2fs | %2dm%ds |\n",voiture[k].id,voiture[k].temp[0],voiture[k].temp[1],voiture[k].temp[2],((int)voiture[k].temp[3]/60),((int)voiture[k].temp[3]%60));
+       printf(" F%2d | %3.2fs | %3.2fs | %3.2fs | %dm%2ds |\n",voiture[k].id,voiture[k].temp[0],voiture[k].temp[1],voiture[k].temp[2],((int)voiture[k].temp[3]/60),((int)voiture[k].temp[3]%60));
     }
 }
 
@@ -32,8 +32,10 @@ for(int k=0;k<V;k++)//voiture
 int main()
 {
 srand(time(NULL));
-strcpy(voiture[0].id,"F44");
-strcpy(voiture[1].id,"F45");
+int NumVoit[20] = {44, 77, 11, 33, 3, 4, 5, 18, 14, 31, 16, 55, 10, 22, 7, 99, 9, 47, 6, 63};
+for(int i=0;i<20;i++){
+	voiture[i].id = NumVoit[i];
+}
 
 float tempT;
 for(int i=0;i<T;i++) //tour
@@ -47,7 +49,6 @@ for(int i=0;i<T;i++) //tour
 		}
 		else{
 			tempT=geneTemp();
-			printf("voiture: %d segment: %d Temps :%.2f\n",k,j,tempT);
 			if(tempT>voiture[k].temp[j]){
 			voiture[k].temp[j] = tempT;
 			}
