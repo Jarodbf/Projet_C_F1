@@ -9,11 +9,13 @@
 struct F1 {
 	int id;
 	float temp[4];
+	float BStemp[4];
 	char statut; //S=stand O=out E=enCourse
 };
 
 struct F1 voiture[V];
 
+int Bid[4];
 float geneTemp (){
 	float r;
     r = (((rand())%16000)+25000);
@@ -26,6 +28,8 @@ for(int k=0;k<V;k++)//voiture
     {
        printf(" F%2d | %3.2fs | %3.2fs | %3.2fs | %dm%2ds |\n",voiture[k].id,voiture[k].temp[0],voiture[k].temp[1],voiture[k].temp[2],((int)voiture[k].temp[3]/60),((int)voiture[k].temp[3]%60));
     }
+	printf("--------------------------------------------------------------\n");
+	printf(" F%2d | %3.2fs | F%2d | %3.2fs | F%2d | %3.2fs |\n",Bid[0],voiture[0].BStemp[0],Bid[1],voiture[0].BStemp[1],Bid[2],voiture[0].BStemp[2]);
 }
 
 
@@ -67,6 +71,18 @@ for(int i=0;i<T;i++) //tour
 		    voiture[k].temp[3] = tempT;
 		}
        	 }
+    }
+	
+	for(int j=0;j<3;j++)// secteurs
+    {
+		float cache = voiture[0].temp[j];
+        for(int k=0;k<V;k++)// meilleur bstemp1 2 3 voiture | not semaphore 
+        { // marche pas btw
+			if(cache>voiture[k].temp[j]){
+			voiture[0].BStemp[j] = cache;
+			Bid[j] = k;
+			}
+		}
     }
 }
 afficheTab();
