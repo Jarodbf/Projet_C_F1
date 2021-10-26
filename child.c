@@ -164,7 +164,8 @@ float tempT;
     int waitPid = pid/10000;
     sleep(waitPid);// pour pas que les fils finissent tous en même temps
     **/
-    voiture[0].id = pid;
+    //printf("%f\n, pid");
+    voiture[0].id = getpid();
     shm_write(shm, &voiture[0]);
   }
   else{
