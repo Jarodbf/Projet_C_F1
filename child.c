@@ -167,6 +167,7 @@ float tempT;
     //printf("%f\n, pid");
     voiture[0].id = getpid();
     shm_write(shm, &voiture[0]);
+    return 0;
   }
   else{
   wait(NULL);
@@ -181,5 +182,5 @@ float tempT;
   
 shm_del(shm);
 afficheTab();
-
+return 0;
 }
