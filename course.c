@@ -29,7 +29,7 @@ for(int k=0;k<V;k++)//voiture
        printf(" F%2d | %3.2fs | %3.2fs | %3.2fs | %dm%2ds |\n",voiture[k].id,voiture[k].temp[0],voiture[k].temp[1],voiture[k].temp[2],((int)voiture[k].temp[3]/60),((int)voiture[k].temp[3]%60));
     }
 	printf("--------------------------------------------------------------\n");
-	printf(" F%2d | %3.2fs | F%2d | %3.2fs | F%2d | %3.2fs |\n",Bid[0],voiture[0].BStemp[0],Bid[1],voiture[0].BStemp[1],Bid[2],voiture[0].BStemp[2]);
+	printf(" F%2d | %3.2fs | F%2d | %3.2fs | F%2d | %3.2fs |\n",voiture[Bid[0]].id,voiture[0].BStemp[0],voiture[Bid[1]].id,voiture[0].BStemp[1],voiture[Bid[2]].id,voiture[0].BStemp[2]);
 }
 
 
@@ -75,7 +75,7 @@ for(int i=0;i<T;i++) //tour
 	
 	for(int j=0;j<3;j++)// secteurs
     {
-		float cache = voiture[0].temp[j];
+		float cache = 40.00;
         for(int k=0;k<V;k++)// meilleur bstemp1 2 3 voiture | not semaphore 
         {
 			if(cache>voiture[k].temp[j]){
