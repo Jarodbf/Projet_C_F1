@@ -77,9 +77,10 @@ for(int i=0;i<T;i++) //tour
     {
 		float cache = voiture[0].temp[j];
         for(int k=0;k<V;k++)// meilleur bstemp1 2 3 voiture | not semaphore 
-        { // marche pas btw
+        {
 			if(cache>voiture[k].temp[j]){
-			voiture[0].BStemp[j] = cache;
+			voiture[0].BStemp[j] = voiture[k].temp[j];
+			cache = voiture[k].temp[j];
 			Bid[j] = k;
 			}
 		}
