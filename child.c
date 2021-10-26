@@ -84,7 +84,7 @@ return r/1000;
 
 void afficheTab() {
 printf(" IDV |  BS1   |  BS2   |  BS3   |  BT   |\n\n");
-for(int k=0;k<V;k++)//voiture
+for(int k=0;k<V+5;k++)//voiture
     {
        printf(" F%2d | %3.2fs | %3.2fs | %3.2fs | %dm%2ds |\n",voiture[k].id,voiture[k].temp[0],voiture[k].temp[1],voiture[k].temp[2],((int)voiture[k].temp[3]/60),((int)voiture[k].temp[3]%60));
     }
@@ -98,16 +98,16 @@ int main()
 srand(time(NULL));
 //int var = 1;
 shm_t *shm = shm_new(sizeof voiture[0]);
-int vNum = 0;
+//int vNum = 0;
 int pid;
 int NumVoit[20] = {44, 77, 11, 33, 3, 4, 5, 18, 14, 31, 16, 55, 10, 22, 7, 99, 9, 47, 6, 63};
-for(int i=0;i<20;i++){
-	voiture[i].id = NumVoit[i];
-}
+//for(int i=0;i<20;i++){
+	//voiture[i].id = NumVoit[i];
+//}
 
 float tempT;
-for(int k = 0; k<20 ; k++)
-  {
+//for(int k = 0; k<20 ; k++)
+  //{
   if ((pid = fork()) == 0)
   { /* child */
     //var = i;
@@ -121,13 +121,13 @@ for(int k = 0; k<20 ; k++)
         {
 
         if(i==0){
-                  voiture[pid].temp[j] = geneTemp();
+                  voiture[0].temp[j] = geneTemp();
                   //shm_write(shm, &voiture[k].temp[j]);
         }
         else{
           tempT=geneTemp();
-          if(tempT>voiture[pid].temp[j]){
-          voiture[pid].temp[j] = tempT;
+          if(tempT>voiture[0].temp[j]){
+          voiture[0].temp[j] = tempT;
           //shm_write(shm, &voiture[k].temp[j]);
           }
         }
@@ -135,17 +135,17 @@ for(int k = 0; k<20 ; k++)
         }
 
         //for(int k=0;k<V;k++)//comptage temps tot
-        {
+        //{
           if(i==0){
-        voiture[pid].temp[3] = voiture[pid].temp[0]+voiture[pid].temp[1]+voiture[pid].temp[2];
+        voiture[0].temp[3] = voiture[0].temp[0]+voiture[0].temp[1]+voiture[0].temp[2];
           }
           else{
-        tempT = voiture[pid].temp[0]+voiture[pid].temp[1]+voiture[pid].temp[2];
-        if(tempT>voiture[pid].temp[3]){
-            voiture[pid].temp[3] = tempT;
+        tempT = voiture[0].temp[0]+voiture[0].temp[1]+voiture[0].temp[2];
+        if(tempT>voiture[0].temp[3]){
+            voiture[0].temp[3] = tempT;
         }
             }
-        }
+        //}
       /**
       for(int j=0;j<3;j++)// secteurs
         {
@@ -160,19 +160,25 @@ for(int k = 0; k<20 ; k++)
         }
         **/
     }
+    /**
     int waitPid = pid/10000;
     sleep(waitPid);// pour pas que les fils finissent tous en même temps
-    shm_write(shm, &voiture[pid]);
+    **/
+    voiture[0].id = pid;
+    shm_write(shm, &voiture[0]);
   }
-  int status;
-  while (wait(&status) != pid);
-  /* */
-  shm_read(&voiture[vNum], shm);
-  vNum++;
+  else{
+  wait(NULL);
+  shm_read(&voiture[0], shm);
+  
+  }
+  
+  //vNum++;
+  
   /* Parent is updated by child */
   //printf("parent: %d\n", var);
-}
-
-afficheTab();
+  
 shm_del(shm);
+afficheTab();
+
 }
