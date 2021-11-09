@@ -98,7 +98,7 @@ int main()
 srand(time(NULL));
 //int var = 1;
 shm_t *shm = shm_new(sizeof voiture[0]);
-//int vNum = 0;
+int vNum = 0;
 int pid;
 int NumVoit[20] = {44, 77, 11, 33, 3, 4, 5, 18, 14, 31, 16, 55, 10, 22, 7, 99, 9, 47, 6, 63};
 //for(int i=0;i<20;i++){
@@ -106,15 +106,15 @@ int NumVoit[20] = {44, 77, 11, 33, 3, 4, 5, 18, 14, 31, 16, 55, 10, 22, 7, 99, 9
 //}
 
 float tempT;
-//for(int k = 0; k<20 ; k++)
-  //{
+for(int k = 0; k<20 ; k++)
+  {
   if ((pid = fork()) == 0)
   { /* child */
     //var = i;
     //shm_write(shm, &var);
     //printf("child: %d\n", var);
     //return 0;
-  
+    sleep((getpid()/5000));
     for(int i=0;i<T;i++) //tour
     {
         for(int j=0;j<3;j++)// secteurs
@@ -169,12 +169,15 @@ float tempT;
     shm_write(shm, &voiture[0]);
     return 0;
   }
-  else{
-  wait(NULL);
-  shm_read(&voiture[0], shm);
   
+    else{
+    wait(NULL);
+    shm_read(&voiture[vNum], shm);
+    vNum++;
+    
+    }
   }
-  
+
   //vNum++;
   
   /* Parent is updated by child */
