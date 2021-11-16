@@ -126,10 +126,10 @@ for(int k = 0; k<20 ; k++)
         }
         else{
           tempT=geneTemp();
-          if(tempT>voiture[0].temp[j]){
+          
           voiture[0].temp[j] = tempT;
           //shm_write(shm, &voiture[k].temp[j]);
-          }
+         
         }
             
         }
@@ -141,7 +141,7 @@ for(int k = 0; k<20 ; k++)
           }
           else{
         tempT = voiture[0].temp[0]+voiture[0].temp[1]+voiture[0].temp[2];
-        if(tempT>voiture[0].temp[3]){
+        if(tempT<voiture[0].temp[3]){
             voiture[0].temp[3] = tempT;
         }
             }
