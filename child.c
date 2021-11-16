@@ -18,7 +18,7 @@ typedef struct
   size_t size;
 } shm_t;
 
-shm_t *shm_new(size_t size)
+shm_t *shm_new(size_t size) //initialise la mémoire partagée 
 {
   shm_t *shm = calloc(1, sizeof *shm);
   shm->size = size;
@@ -33,7 +33,7 @@ shm_t *shm_new(size_t size)
   return shm;
 }
 
-void shm_write(shm_t *shm, void *data)
+void shm_write(shm_t *shm, void *data) // sert a écrire dans la mémoire partagée
 {
   void *shm_data;
 
@@ -47,7 +47,7 @@ void shm_write(shm_t *shm, void *data)
   shmdt(shm_data);
 }
 
-void shm_read(void *data, shm_t *shm)
+void shm_read(void *data, shm_t *shm) // sert a lire la mémoire partagée 
 {
   void *shm_data;
 
@@ -60,7 +60,7 @@ void shm_read(void *data, shm_t *shm)
   shmdt(shm_data);
 }
 
-void shm_del(shm_t *shm)
+void shm_del(shm_t *shm) //sert a nettoyer la mémoire 
 {
   shmctl(shm->id, IPC_RMID, 0);
   free(shm);
@@ -165,15 +165,15 @@ for(int k = 0; k<20 ; k++)
     sleep(waitPid);// pour pas que les fils finissent tous en même temps
     **/
     //printf("%f\n, pid");
-    voiture[0].id = getpid();
-    shm_write(shm, &voiture[0]);
+    voiture[0].id = getpid(); // incrit le pid dans la structure personnel du fils
+    shm_write(shm, &voiture[0]);// écrit le contenu du fils dans la mémoire partagée 
     return 0;
   }
   
     else{
-    wait(NULL);
-    shm_read(&voiture[vNum], shm);
-    vNum++;
+    wait(NULL);// passe au père
+    shm_read(&voiture[vNum], shm);// le père lit la mémoire partager et copy le contenu de cette dernière dans la structure voiture
+    vNum++;//le conteur des voitures
     
     }
   }
@@ -183,7 +183,7 @@ for(int k = 0; k<20 ; k++)
   /* Parent is updated by child */
   //printf("parent: %d\n", var);
 //shm_read(&voiture, shm);
-shm_del(shm);
-afficheTab();
+shm_del(shm); //nettoie la mémoire partagée 
+afficheTab(); //afiche le tableau des données 
 return 0;
 }
