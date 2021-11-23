@@ -1,81 +1,90 @@
-#include <sys/types.h>
-#include <sys/ipc.h>
-#include <sys/shm.h>
-#include <sys/stat.h>
+#include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
-#include <sys/wait.h>
-#include <time.h>
 
 # define V  20
 # define T  5
 
-int shmid;
-
 struct F1 {
 	int id;
-	int temp[4];
-	int BStemp[4];
+	float temp[4];
+	float BStemp[4];
 	char statut; //S=stand O=out E=enCourse
 };
-struct F1 * voitures;
+
+struct F1 voiture[V];
 
 int Bid[4];
-int geneTemp (int x){
-	int r=(abs(rand()*x)% (40000 -25000 +1))+25000;
-	return  r/1000;
+float geneTemp (){
+	float r;
+    r = (((rand())%16000)+25000);
+return r/1000;
 }
 
 void afficheTab() {
 printf(" IDV |  BS1   |  BS2   |  BS3   |  BT   |\n\n");
-for(int k=0;k<V+5;k++)//voiture
+for(int k=0;k<V;k++)//voiture
     {
-       printf(" F%2d | %2d | %2d | %2d\n",voitures[1].id,voitures[1].temp[0],voitures[1].temp[1],voitures[1].temp[2]);
+       printf(" F%2d | %3.2fs | %3.2fs | %3.2fs | %dm%2ds |\n",voiture[k].id,voiture[k].temp[0],voiture[k].temp[1],voiture[k].temp[2],((int)voiture[k].temp[3]/60),((int)voiture[k].temp[3]%60));
     }
 	printf("--------------------------------------------------------------\n");
-	//printf(" F%2d | %3.2fs | F%2d | %3.2fs | F%2d | %3.2fs |\n",Bid[0],voiture[0].BStemp[0],Bid[1],voiture[0].BStemp[1],Bid[2],voiture[0].BStemp[2]);
+	printf(" F%2d | %3.2fs | F%2d | %3.2fs | F%2d | %3.2fs |\n",voiture[Bid[0]].id,voiture[0].BStemp[0],voiture[Bid[1]].id,voiture[0].BStemp[1],voiture[Bid[2]].id,voiture[0].BStemp[2]);
 }
 
 
 int main()
 {
 srand(time(NULL));
-
-int vNum = 0;
-int pid;
 int NumVoit[20] = {44, 77, 11, 33, 3, 4, 5, 18, 14, 31, 16, 55, 10, 22, 7, 99, 9, 47, 6, 63};
-//for(int i=0;i<20;i++){
-	//voiture[i].id = NumVoit[i];
-//}
-struct F1 * voitures = malloc(sizeof(voitures)*20);
-int key=22;
-int shmid = shmget(key,sizeof(struct F1)*20,IPC_CREAT|0666);
-voitures = (struct F1*) shmat(shmid,0,0);
+for(int i=0;i<20;i++){
+	voiture[i].id = NumVoit[i];
+}
 
-
-for(int k = 0; k<20 ; k++)
-  {
-	voitures[k].id = NumVoit[k]; 
-  if ((pid = fork()) == 0)
-  { 
-    voitures[1].temp[0] = geneTemp(getpid());
-	voitures[1].temp[1] = geneTemp(getpid());
-	voitures[1].temp[2] = geneTemp(getpid());
-    exit(1);
-  }
-  
-    else{
-    wait(NULL);// passe au père
-	//printf("%d\n",voitures[1].temp[0]);
-	 printf(" F%2d | %2d | %2d | %2d\n",voitures[1].id,voitures[1].temp[0],voitures[1].temp[1],voitures[1].temp[2]);	
-	 //afficheTab();
-    vNum++;//le conteur des voitures
-    
+float tempT;
+for(int i=0;i<T;i++) //tour
+{
+    for(int j=0;j<3;j++)// secteurs
+    {
+        for(int k=0;k<V;k++)//voiture
+        {
+		if(i==0){
+           		voiture[k].temp[j] = geneTemp();
+		}
+		else{
+			tempT=geneTemp();
+			if(tempT>voiture[k].temp[j]){
+			voiture[k].temp[j] = tempT;
+			}
+		}
+        }
     }
-  }
-  
-afficheTab(); //afiche le tableau des données 
-return 0;
+
+    for(int k=0;k<V;k++)//comptage temps tot
+    {
+	    if(i==0){
+		voiture[k].temp[3] = voiture[k].temp[0]+voiture[k].temp[1]+voiture[k].temp[2];
+	    }
+	    else{
+		tempT = voiture[k].temp[0]+voiture[k].temp[1]+voiture[k].temp[2];
+		if(tempT>voiture[k].temp[3]){
+		    voiture[k].temp[3] = tempT;
+		}
+       	 }
+    }
+	
+	for(int j=0;j<3;j++)// secteurs
+    {
+		float cache = 40.00;
+        for(int k=0;k<V;k++)// meilleur bstemp1 2 3 voiture | not semaphore 
+        {
+			if(cache>voiture[k].temp[j]){
+			voiture[0].BStemp[j] = voiture[k].temp[j];
+			cache = voiture[k].temp[j];
+			Bid[j] = k;
+			}
+		}
+    }
+}
+afficheTab();
 }
