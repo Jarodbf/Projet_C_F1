@@ -8,19 +8,13 @@
 #include <unistd.h>
 #include <sys/wait.h>
 #include <time.h>
+#include "SharedMemory.h"
 
 # define V  20
 # define T  5
 
 int shmid;
 
-struct F1 {
-	int id;
-	int temp[4];
-	int BStemp[4];
-	char statut; //S=stand O=out E=enCourse
-};
-struct F1 * voitures;
 
 int Bid[4];
 int geneTemp (int x){
@@ -49,11 +43,6 @@ int NumVoit[20] = {44, 77, 11, 33, 3, 4, 5, 18, 14, 31, 16, 55, 10, 22, 7, 99, 9
 //for(int i=0;i<20;i++){
 	//voiture[i].id = NumVoit[i];
 //}
-struct F1 * voitures = malloc(sizeof(voitures)*20);
-int key=22;
-int shmid = shmget(key,sizeof(struct F1)*20,IPC_CREAT|0666);
-voitures = (struct F1*) shmat(shmid,0,0);
-
 
 for(int k = 0; k<20 ; k++)
   {
