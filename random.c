@@ -3,13 +3,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-int main()
-{
-srand(time(NULL));
-for(int i=0;i<20;i++)
-        {
-        float r = ((rand()%16)+25);
-        printf("%d\n",r);
-        }
-return 0;
+int geneTemp (int x){
+	int r=(abs(rand()*x)% (40000 -25000 +1))+25000;
+	return  r/1000;
 }
