@@ -43,7 +43,7 @@ int NumVoit[20] = {44, 77, 11, 33, 3, 4, 5, 18, 14, 31, 16, 55, 10, 22, 7, 99, 9
 //for(int i=0;i<20;i++){
 	//voiture[i].id = NumVoit[i];
 //}
-
+connectShm();
 for(int k = 0; k<20 ; k++)
   {
 	voitures[k].id = NumVoit[k]; 

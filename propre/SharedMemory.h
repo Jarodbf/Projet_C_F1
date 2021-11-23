@@ -7,12 +7,11 @@ struct F1 {
 
 struct F1 * voitures;
 int shmid;
-struct F1 * voitures = malloc(sizeof(voitures)*20);
-key_t key=22;
+int key=22;
 
-int conectShm(){
+int connectShm(){
 	
-	int shmid = shmget(key,sizeof(struct F1)*20,IPC_CREAT|0666);
+	shmid = shmget(key,sizeof(struct F1)*20,IPC_CREAT|0666);
 	voitures = (struct F1*) shmat(shmid,0,0);
 }
 
