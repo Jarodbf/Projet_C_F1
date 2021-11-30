@@ -13,9 +13,6 @@
 # define V  20
 # define T  5
 
-int shmid;
-
-
 int Bid[4];
 int geneTemp (int x){
 	int r=(abs(rand()*x)% (40000 -25000 +1))+25000;
@@ -56,9 +53,6 @@ for(int k = 0; k<20 ; k++)
   
     else{
     wait(NULL);// passe au père
-	//printf("%d\n",voitures[1].temp[0]);
-	 //printf("Pere F%2d | %2d | %2d | %2d\n",voitures[1].id,voitures[1].temp[0],voitures[1].temp[1],voitures[1].temp[2]);	
-	 //afficheTab();
     
     }
   }
