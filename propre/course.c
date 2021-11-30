@@ -10,8 +10,9 @@
 #include <time.h>
 #include "SharedMemory.h"
 
-# define V  20
+# define V  21
 # define T  5
+struct F1 voitcpy[21];
 
 int Bid[4];
 int geneTemp (int x){
@@ -21,9 +22,9 @@ int geneTemp (int x){
 
 void afficheTab() {
 printf(" IDV |  BS1   |  BS2   |  BS3   |  BT   |\n\n");
-for(int k=0;k<V;k++)//voiture
+for(int k=0;k<V-1;k++)//voiture
     {
-       printf("F%2d | %2d | %2d | %2d\n",voitures[k].id,voitures[k].temp[0],voitures[k].temp[1],voitures[k].temp[2]);
+       printf("F%2d | %2d | %2d | %2d\n",voitcpy[k].id,voitcpy[k].temp[0],voitcpy[k].temp[1],voitcpy[k].temp[2]);
     }
 	printf("--------------------------------------------------------------\n");
 	//printf(" F%2d | %3.2fs | F%2d | %3.2fs | F%2d | %3.2fs |\n",Bid[0],voiture[0].BStemp[0],Bid[1],voiture[0].BStemp[1],Bid[2],voiture[0].BStemp[2]);
@@ -48,15 +49,20 @@ for(int k = 0; k<20 ; k++)
     voitures[k].temp[0] = geneTemp(getpid());
 	voitures[k].temp[1] = geneTemp(getpid());
 	voitures[k].temp[2] = geneTemp(getpid());
+	if(k==0)
+	{
+		voitures[21].BStemp[0] = geneTemp(getpid());
+	}
     exit(1);
   }
   
     else{
     wait(NULL);// passe au père
-    
+    memcpy(&voitcpy,voitures,sizeof(struct F1)*21);
     }
   }
-  
-afficheTab(); //afiche le tableau des données 
+disconectShm();
+afficheTab();
+ //afiche le tableau des données 
 return 0;
 }
