@@ -24,8 +24,12 @@ void afficheTab() {
 printf(" IDV |  BS1   |  BS2   |  BS3   |  BT   |\n\n");
 for(int k=0;k<V-1;k++)//voiture
     {
-       printf("F%2d | %2d | %2d | %2d\n",voitcpy[k].id,voitcpy[k].temp[0],voitcpy[k].temp[1],voitcpy[k].temp[2]);
+       printf(" F%2d | %2d | %2d | %2d | %2ds \n",voitcpy[k].id,voitcpy[k].temp[0],voitcpy[k].temp[1],voitcpy[k].temp[2],voitcpy[k].temp[3]);
     }
+	printf(" Best S1: %d\n",voitcpy[20].BStemp[0]);
+	printf(" Best S2: %d\n",voitcpy[20].BStemp[1]);
+	printf(" Best S3: %d\n",voitcpy[20].BStemp[2]);
+	printf(" Best Temp Total: %d\n",voitcpy[20].BStemp[3]);
 	printf("--------------------------------------------------------------\n");
 	//printf(" F%2d | %3.2fs | F%2d | %3.2fs | F%2d | %3.2fs |\n",Bid[0],voiture[0].BStemp[0],Bid[1],voiture[0].BStemp[1],Bid[2],voiture[0].BStemp[2]);
 }
@@ -41,6 +45,9 @@ int NumVoit[20] = {44, 77, 11, 33, 3, 4, 5, 18, 14, 31, 16, 55, 10, 22, 7, 99, 9
 	//voiture[i].id = NumVoit[i];
 //}
 connectShm();
+for(int i=0;i<4;i++){
+voitures[20].BStemp[i] = 999;
+}
 for(int k = 0; k<20 ; k++)
   {
 	voitures[k].id = NumVoit[k]; 
@@ -49,9 +56,22 @@ for(int k = 0; k<20 ; k++)
     voitures[k].temp[0] = geneTemp(getpid());
 	voitures[k].temp[1] = geneTemp(getpid());
 	voitures[k].temp[2] = geneTemp(getpid());
-	if(k==0)
+	voitures[k].temp[3] = voitures[k].temp[0] + voitures[k].temp[1] +voitures[k].temp[2];
+	if(voitures[20].BStemp[0]>voitures[k].temp[0])
 	{
-		voitures[21].BStemp[0] = geneTemp(getpid());
+		voitures[20].BStemp[0] = voitures[k].temp[0];
+	}
+	if(voitures[20].BStemp[1]>voitures[k].temp[1])
+	{
+		voitures[20].BStemp[1] = voitures[k].temp[1];
+	}
+	if(voitures[20].BStemp[2]>voitures[k].temp[2])
+	{
+		voitures[20].BStemp[2] = voitures[k].temp[2];
+	}
+	if(voitures[20].BStemp[3]>voitures[k].temp[3])
+	{
+		voitures[20].BStemp[3] = voitures[k].temp[3];
 	}
     exit(1);
   }
