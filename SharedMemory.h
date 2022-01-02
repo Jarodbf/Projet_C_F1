@@ -1,7 +1,7 @@
 struct F1 {
 	int id;
 	int idBst[4];
-	int temp[4];
+	int temp[5];
 	int BStemp[4];
     float timerCourse;
 	char statut; //S=stand O=out E=enCourse

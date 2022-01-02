@@ -14,6 +14,7 @@
 # define V  21
 # define T  5
 struct F1 voitcpy[21];
+struct F1 classment[21];
 
 int Bid[4];
 int geneTemp (int x){
@@ -24,10 +25,22 @@ int geneTemp (int x){
 void afficheTab() {
 	int kTemp;
 	system("clear");
-printf("   IDV   |  BS1   |  BS2   |  BS3   |   BT    |   ECART   |\n\n");
+printf("   IDV   |  S1   |  S2   |  S3   |   TEMP TOT    |   BTEMP   |   ECART   |\n\n");
+memcpy(&classment,voitcpy,sizeof(struct F1)*21);
+for (int i=0; i<20;i++){
+	for (int y=i+1; y<20;y++){
+		if(classment[i].temp[4]>classment[y].temp[4])
+		{
+			classment[20] = classment[i];
+			classment[i] = classment[y];
+			classment[y] = classment[20];
+		}
+	}
+}
+
 for(int k=0;k<V-1;k++)//voiture
     {
-       printf("   F%2d   |   %2d   |   %2d   |   %2d   |   %2ds   |   ",voitcpy[k].id,voitcpy[k].temp[0],voitcpy[k].temp[1],voitcpy[k].temp[2],voitcpy[k].temp[3]);
+       printf("   F%2d   |   %2d   |   %2d   |   %2d   |   %2ds   |   %2ds   |   ",classment[k].id,classment[k].temp[0],classment[k].temp[1],classment[k].temp[2],classment[k].temp[3],classment[k].temp[4]);
 	   if(k == 0)
 	   {
 		   printf("0s\n");
@@ -36,7 +49,7 @@ for(int k=0;k<V-1;k++)//voiture
 	   {
 		   kTemp = k-1;
 		   
-		   printf("%2ds\n",voitcpy[k].temp[3] - voitcpy[kTemp].temp[3]);
+		   printf("%2ds\n",classment[k].temp[4] - classment[kTemp].temp[4]);
 	   }
     }
 	printf(" Best S1 par F%2d: %2d\n",voitcpy[20].idBst[0], voitcpy[20].BStemp[0]);
@@ -44,7 +57,7 @@ for(int k=0;k<V-1;k++)//voiture
 	printf(" Best S3 par F%2d: %2d\n",voitcpy[20].idBst[2], voitcpy[20].BStemp[2]);
 	printf(" Best Temp Total par F%2d: %2d\n",voitcpy[20].idBst[3], voitcpy[20].BStemp[3]);
 	printf("--------------------------------------------------------------\n");
-	//printf(" F%2d | %3.2fs | F%2d | %3.2fs | F%2d | %3.2fs |\n",Bid[0],voiture[0].BStemp[0],Bid[1],voiture[0].BStemp[1],Bid[2],voiture[0].BStemp[2]);
+
 }
 
 
@@ -54,17 +67,14 @@ srand(time(NULL));
 
 int pid;
 int NumVoit[20] = {44, 77, 11, 33, 3, 4, 5, 18, 14, 31, 16, 55, 10, 22, 7, 99, 9, 47, 6, 63};
-//for(int i=0;i<20;i++){
-	//voiture[i].id = NumVoit[i];
-//}
 connectShm();
 for(int i=0;i<4;i++){
 voitures[20].BStemp[i] = 999;
 }
-struct timeval st , et;
-     int oui = 0;
-     while(oui < 12){
-		gettimeofday(&st , NULL);
+struct timeval tempInitial , tempFinal;
+     int seconde = 0;
+     while(seconde < 12){
+		gettimeofday(&tempInitial , NULL);
 		sleep(1);
 		for(int k = 0; k<20 ; k++)
 		{
@@ -78,24 +88,11 @@ struct timeval st , et;
 			voitures[k].temp[2] = geneTemp(getpid());
 			
 			voitures[k].temp[3] = voitures[k].temp[0] + voitures[k].temp[1] +voitures[k].temp[2];
-			if(voitures[k].temp[0] > voitcpy[k].temp[0] && voitcpy[k].temp[0] != 0)
+			
+			voitures[k].temp[4] = voitures[k].temp[0] + voitures[k].temp[1] +voitures[k].temp[2];
+			if(voitures[k].temp[4] > voitcpy[k].temp[4] && voitcpy[k].temp[4] != 0)
 			{
-				voitures[k].temp[0] = voitcpy[k].temp[0];
-			}
-			if(voitures[k].temp[1] > voitcpy[k].temp[1] && voitcpy[k].temp[1] != 0)
-			{
-				voitures[k].temp[1] = voitcpy[k].temp[1];
-			}
-			if(voitures[k].temp[2] > voitcpy[k].temp[2] && voitcpy[k].temp[2] != 0)
-			{
-				voitures[k].temp[2] = voitcpy[k].temp[2];
-			}
-			if(voitures[k].temp[3] > voitcpy[k].temp[3] && voitcpy[k].temp[3] != 0)//best tour
-			{
-				// voitures[k].temp[0] = voitcpy[k].temp[0];
-				// voitures[k].temp[1] = voitcpy[k].temp[1];
-				// voitures[k].temp[2] = voitcpy[k].temp[2];
-				voitures[k].temp[3] = voitcpy[k].temp[3];
+				voitures[k].temp[4] = voitcpy[k].temp[4];
 			}
 
 			if(voitures[20].BStemp[0]>voitures[k].temp[0])
@@ -127,11 +124,11 @@ struct timeval st , et;
 			memcpy(&voitcpy,voitures,sizeof(struct F1)*21);
 			}
 		}
-		gettimeofday(&et , NULL);
-     oui += (et.tv_sec - st.tv_sec);
+		gettimeofday(&tempFinal , NULL);
+     seconde += (tempFinal.tv_sec - tempInitial.tv_sec);
      
 		afficheTab();
-		printf("\nTotal time taken is : %lu seconds and %lu microseconds\n",(oui),(et.tv_usec - st.tv_usec));
+		printf("\nTotal time taken is : %d seconds and %lu microseconds\n",(seconde),(tempFinal.tv_usec - tempInitial.tv_usec));
 }
 disconectShm();
  //afiche le tableau des données 
