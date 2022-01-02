@@ -61,21 +61,24 @@ struct timeval st , et;
 		if ((pid = fork()) == 0)
 		{ 
 			voitures[k].temp[0] = geneTemp(getpid());
+			
+			voitures[k].temp[1] = geneTemp(getpid());
+			
+			voitures[k].temp[2] = geneTemp(getpid());
+			
+			voitures[k].temp[3] = voitures[k].temp[0] + voitures[k].temp[1] +voitures[k].temp[2];
 			if(voitures[k].temp[0] > voitcpy[k].temp[0] && voitcpy[k].temp[0] != 0)
 			{
 				voitures[k].temp[0] = voitcpy[k].temp[0];
 			}
-			voitures[k].temp[1] = geneTemp(getpid());
 			if(voitures[k].temp[1] > voitcpy[k].temp[1] && voitcpy[k].temp[1] != 0)
 			{
 				voitures[k].temp[1] = voitcpy[k].temp[1];
 			}
-			voitures[k].temp[2] = geneTemp(getpid());
 			if(voitures[k].temp[2] > voitcpy[k].temp[2] && voitcpy[k].temp[2] != 0)
 			{
 				voitures[k].temp[2] = voitcpy[k].temp[2];
 			}
-			voitures[k].temp[3] = voitures[k].temp[0] + voitures[k].temp[1] +voitures[k].temp[2];
 			if(voitures[20].BStemp[0]>voitures[k].temp[0])
 			{
 				voitures[20].BStemp[0] = voitures[k].temp[0];
@@ -92,7 +95,13 @@ struct timeval st , et;
 			{
 				voitures[20].BStemp[3] = voitures[k].temp[3];
 			}
-			
+			if(voitures[k].temp[3] > voitcpy[k].temp[3] && voitcpy[k].temp[3] != 0)
+			{
+				// voitures[k].temp[0] = voitcpy[k].temp[0];
+				// voitures[k].temp[1] = voitcpy[k].temp[1];
+				// voitures[k].temp[2] = voitcpy[k].temp[2];
+				voitures[k].temp[3] = voitcpy[k].temp[3];
+			}
 			exit(1);
 		}
 		
