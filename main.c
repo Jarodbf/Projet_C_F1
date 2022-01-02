@@ -10,6 +10,7 @@
 #include <sys/time.h>
 #include <time.h>
 #include "SharedMemory.h"
+#include <fcntl.h>
 
 # define V  21
 # define T  5
@@ -59,6 +60,40 @@ for(int k=0;k<V-1;k++)//voiture
 	printf("--------------------------------------------------------------\n");
 
 }
+void WriteResult(){
+	int kTemp;
+	FILE * fp;
+	fp = fopen ("result.txt", "w");
+    if(fp < 0){ // vérifie que le fichier se soit ouvert
+        perror("file ");
+        exit(0);
+    }
+	char ou[20] ;
+	for(int k=0;k<V-1;k++)//voiture
+    {
+	   fprintf(fp,"%d\n", classment[k].id);
+	   fprintf(fp,"%d\n", classment[k].temp[0]);
+	   fprintf(fp,"%d\n", classment[k].temp[1]);
+	   fprintf(fp,"%d\n", classment[k].temp[2]);
+	   fprintf(fp,"%d\n", classment[k].temp[3]);
+	   fprintf(fp,"%d\n", classment[k].temp[4]);
+
+	   if(k == 0)
+	   {
+		   fprintf(fp,"0s\n");
+	   }
+	   else
+	   {
+		   kTemp = k-1;
+		   
+		   int tempTemps = classment[k].temp[4] - classment[kTemp].temp[4];
+		   fprintf(fp,"%d\n", tempTemps);
+
+	   }
+    }
+	fprintf(fp,"%d\n%d\n%d\n%d\n%d\n%d\n%d\n%d\n", voitcpy[20].idBst[0], voitcpy[20].BStemp[0], voitcpy[20].idBst[1],voitcpy[20].BStemp[1],voitcpy[20].idBst[2], voitcpy[20].BStemp[2], voitcpy[20].idBst[3], voitcpy[20].BStemp[3]);
+	fclose(fp);
+}
 
 
 int main()
@@ -73,9 +108,9 @@ voitures[20].BStemp[i] = 999;
 }
 struct timeval tempInitial , tempFinal;
      int seconde = 0;
-     while(seconde < 12){
+     while(seconde < 1){
 		gettimeofday(&tempInitial , NULL);
-		sleep(1);
+		//sleep(1);
 		for(int k = 0; k<20 ; k++)
 		{
 			voitures[k].id = NumVoit[k]; 
@@ -132,5 +167,6 @@ struct timeval tempInitial , tempFinal;
 }
 disconectShm();
  //afiche le tableau des données 
+ WriteResult();
 return 0;
 }
