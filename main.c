@@ -28,10 +28,10 @@ for(int k=0;k<V-1;k++)//voiture
     {
        printf(" F%2d | %2d | %2d | %2d | %2ds \n",voitcpy[k].id,voitcpy[k].temp[0],voitcpy[k].temp[1],voitcpy[k].temp[2],voitcpy[k].temp[3]);
     }
-	printf(" Best S1: %d\n",voitcpy[20].BStemp[0]);
-	printf(" Best S2: %d\n",voitcpy[20].BStemp[1]);
-	printf(" Best S3: %d\n",voitcpy[20].BStemp[2]);
-	printf(" Best Temp Total: %d\n",voitcpy[20].BStemp[3]);
+	printf(" Best S1 par F%2d: %2d\n",voitcpy[20].idBst[0], voitcpy[20].BStemp[0]);
+	printf(" Best S2 par F%2d: %2d\n",voitcpy[20].idBst[1], voitcpy[20].BStemp[1]);
+	printf(" Best S3 par F%2d: %2d\n",voitcpy[20].idBst[2], voitcpy[20].BStemp[2]);
+	printf(" Best Temp Total par F%2d: %2d\n",voitcpy[20].idBst[3], voitcpy[20].BStemp[3]);
 	printf("--------------------------------------------------------------\n");
 	//printf(" F%2d | %3.2fs | F%2d | %3.2fs | F%2d | %3.2fs |\n",Bid[0],voiture[0].BStemp[0],Bid[1],voiture[0].BStemp[1],Bid[2],voiture[0].BStemp[2]);
 }
@@ -79,29 +79,35 @@ struct timeval st , et;
 			{
 				voitures[k].temp[2] = voitcpy[k].temp[2];
 			}
-			if(voitures[20].BStemp[0]>voitures[k].temp[0])
-			{
-				voitures[20].BStemp[0] = voitures[k].temp[0];
-			}
-			if(voitures[20].BStemp[1]>voitures[k].temp[1])
-			{
-				voitures[20].BStemp[1] = voitures[k].temp[1];
-			}
-			if(voitures[20].BStemp[2]>voitures[k].temp[2])
-			{
-				voitures[20].BStemp[2] = voitures[k].temp[2];
-			}
-			if(voitures[20].BStemp[3]>voitures[k].temp[3])
-			{
-				voitures[20].BStemp[3] = voitures[k].temp[3];
-			}
-			if(voitures[k].temp[3] > voitcpy[k].temp[3] && voitcpy[k].temp[3] != 0)
+			if(voitures[k].temp[3] > voitcpy[k].temp[3] && voitcpy[k].temp[3] != 0)//best tour
 			{
 				// voitures[k].temp[0] = voitcpy[k].temp[0];
 				// voitures[k].temp[1] = voitcpy[k].temp[1];
 				// voitures[k].temp[2] = voitcpy[k].temp[2];
 				voitures[k].temp[3] = voitcpy[k].temp[3];
 			}
+
+			if(voitures[20].BStemp[0]>voitures[k].temp[0])
+			{
+				voitures[20].BStemp[0] = voitures[k].temp[0];
+				voitures[20].idBst[0] = voitures[k].id;
+			}
+			if(voitures[20].BStemp[1]>voitures[k].temp[1])
+			{
+				voitures[20].BStemp[1] = voitures[k].temp[1];
+				voitures[20].idBst[1] = voitures[k].id;
+			}
+			if(voitures[20].BStemp[2]>voitures[k].temp[2])
+			{
+				voitures[20].BStemp[2] = voitures[k].temp[2];
+				voitures[20].idBst[2] = voitures[k].id;
+			}
+			if(voitures[20].BStemp[3]>voitures[k].temp[3])
+			{
+				voitures[20].BStemp[3] = voitures[k].temp[3];
+				voitures[20].idBst[3] = voitures[k].id;
+			}
+			
 			exit(1);
 		}
 		
@@ -112,8 +118,9 @@ struct timeval st , et;
 		}
 		gettimeofday(&et , NULL);
      oui += (et.tv_sec - st.tv_sec);
-     printf("\nTotal time taken is : %lu seconds and %lu microseconds\n",(oui),(et.tv_usec - st.tv_usec));
+     
 		afficheTab();
+		printf("\nTotal time taken is : %lu seconds and %lu microseconds\n",(oui),(et.tv_usec - st.tv_usec));
 }
 disconectShm();
  //afiche le tableau des données 

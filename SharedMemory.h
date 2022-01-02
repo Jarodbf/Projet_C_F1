@@ -1,5 +1,6 @@
 struct F1 {
 	int id;
+	int idBst[4];
 	int temp[4];
 	int BStemp[4];
     float timerCourse;
