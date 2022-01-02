@@ -22,11 +22,22 @@ int geneTemp (int x){
 }
 
 void afficheTab() {
+	int kTemp;
 	system("clear");
-printf(" IDV |  BS1   |  BS2   |  BS3   |  BT   |\n\n");
+printf("   IDV   |  BS1   |  BS2   |  BS3   |   BT    |   ECART   |\n\n");
 for(int k=0;k<V-1;k++)//voiture
     {
-       printf(" F%2d | %2d | %2d | %2d | %2ds \n",voitcpy[k].id,voitcpy[k].temp[0],voitcpy[k].temp[1],voitcpy[k].temp[2],voitcpy[k].temp[3]);
+       printf("   F%2d   |   %2d   |   %2d   |   %2d   |   %2ds   |   ",voitcpy[k].id,voitcpy[k].temp[0],voitcpy[k].temp[1],voitcpy[k].temp[2],voitcpy[k].temp[3]);
+	   if(k == 0)
+	   {
+		   printf("0s\n");
+	   }
+	   else
+	   {
+		   kTemp = k-1;
+		   
+		   printf("%2ds\n",voitcpy[k].temp[3] - voitcpy[kTemp].temp[3]);
+	   }
     }
 	printf(" Best S1 par F%2d: %2d\n",voitcpy[20].idBst[0], voitcpy[20].BStemp[0]);
 	printf(" Best S2 par F%2d: %2d\n",voitcpy[20].idBst[1], voitcpy[20].BStemp[1]);
