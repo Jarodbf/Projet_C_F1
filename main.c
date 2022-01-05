@@ -23,7 +23,8 @@ void afficheTab(char *NumCourse) {
 //	system("clear");
 if(strcmp(NumCourse , "C1")!=0)
 {
-	printf("   IDV   |  S1   |  S2   |  S3   |   TEMP   |   BTEMP   |   STATUS  |   ECART    |\n\n");
+	printf("%*s | %*s | %*s | %*s | %*s | %*s | %*s | %*s | %*s |\n",5,"N°",6,"IDV",5,"S1",5,"S2",5,"S3",6,"TEMP",5,"BTEMP",5,"STATUS",5,"ECART");
+	printf("‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾\n");
 	memcpy(&classment,voitcpy,sizeof(struct F1)*21);
 	for (int i=0; i<V-1;i++){
 		for (int y=i+1; y<V-1;y++){
@@ -46,7 +47,8 @@ if(strcmp(NumCourse , "C1")!=0)
 }
 else
 {
-	printf("   IDV   |  S1   |  S2   |  S3   |   TEMP   |   BTEMP   |   TEMP TOT   |   STATUS  |   ECART    |\n\n");
+	printf("%*s | %*s | %*s | %*s | %*s | %*s | %*s | %*s | %*s | %*s |\n",5,"N°",6,"IDV",5,"S1",5,"S2",5,"S3",6,"TEMP",5,"BTEMP",5,"STATUS",5,"TEMP TOT",5,"ECART");
+	printf("‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾\n");
 	memcpy(&classment,voitcpy,sizeof(struct F1)*21);
 	for (int i=0; i<V-1;i++){
 		for (int y=i+1; y<V-1;y++){
@@ -70,32 +72,33 @@ for(int k=0;k<V-1;k++)//voiture
 		if (classment[k].lost == 0){
 			if(strcmp(NumCourse , "C1")==0)
 			{
-			   printf("N°%d   F%2d   |   %2d   |   %2d   |   %2d   |   %2ds   |   %2ds   |   %2ds   | %c  ",k+1,classment[k].id,classment[k].temp[0],classment[k].temp[1],classment[k].temp[2],classment[k].temp[3],classment[k].temp[4],classment[k].temp[5],classment[k].statut);
+			   printf("N°%*d | F%*d | %*d | %*d | %*d | %*ds | %*ds | %*c | %*ds |",2,k+1,5,classment[k].id,5,classment[k].temp[0],5,classment[k].temp[1],5,classment[k].temp[2],5,classment[k].temp[3],5,classment[k].temp[4],4,classment[k].statut,5,classment[k].temp[5]);
 			   if(k == 0)
 			   {
-				   printf("0s\n");
+				   printf("%*ds |\n",4,0);
+				   
 			   }
 			   else
 			   {
 				   kTemp = k-1;
-				   
-				   printf("%2ds\n",abs(classment[k].temp[5] - classment[kTemp].temp[5]));
+				   printf("%*ds |\n",4,abs(classment[k].temp[5] - classment[kTemp].temp[5]));
 				}
 			}
 			else{
-				printf("N°%d   F%2d   |   %2d   |   %2d   |   %2d   |   %2ds   |   %2ds   | %c  ",k+1,classment[k].id,classment[k].temp[0],classment[k].temp[1],classment[k].temp[2],classment[k].temp[3],classment[k].temp[4],classment[k].statut);
+				printf("N°%*d | F%*d | %*d | %*d | %*d | %*ds | %*ds | %*c |",2,k+1,5,classment[k].id,5,classment[k].temp[0],5,classment[k].temp[1],5,classment[k].temp[2],5,classment[k].temp[3],5,classment[k].temp[4],4,classment[k].statut);
 			   if(k == 0)
 			   {
-				   printf("0s\n");
+				   printf("%*ds |\n",4,0);
 			   }
 			   else
 			   {
 				   kTemp = k-1;
-				   printf("%2ds\n",abs(classment[k].temp[4] - classment[kTemp].temp[4]));
+				   printf("%*ds |\n",4,abs(classment[k].temp[4] - classment[kTemp].temp[4]));
 				}
 			}
 		}
     }
+	printf("‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾\n");
 	printf(" Best S1 par F%2d: %2d\n",voitcpy[20].idBst[0], voitcpy[20].BStemp[0]);
 	printf(" Best S2 par F%2d: %2d\n",voitcpy[20].idBst[1], voitcpy[20].BStemp[1]);
 	printf(" Best S3 par F%2d: %2d\n",voitcpy[20].idBst[2], voitcpy[20].BStemp[2]);
@@ -261,16 +264,14 @@ if (argc > 1)
 	}
 	else
 	{
-		printf("Mauvais argument veuillez entrée un des suivant: P1, P2, P3, Q1, Q2, Q3, C1");
+		printf("Mauvais argument veuillez entrée un des suivant: P1, P2, P3, Q1, Q2, Q3, C1\n");
 	}
 }
 else
 {
-	printf("Veuillez entrée un argument: P1, P2, P3, Q1, Q2, Q3, C1");
+	printf("Veuillez entrée un argument: P1, P2, P3, Q1, Q2, Q3, C1\n");
 }
  //afiche le tableau des données
 sem_destroy(sm);
 return 0;
 }
-
-
