@@ -171,7 +171,7 @@ int getTour(char * tour){
 		{
 			fichier = open("Q3.txt", O_RDONLY );
 		}
-		char* str = malloc(sizeof(char)*50);
+		char* str = malloc(sizeof(char)*500);
 		int red;
 		char *classement;
 		red = read(fichier, str, sizeof(str)*30); 

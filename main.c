@@ -207,7 +207,7 @@ if (argc > 1)
 			while(seconde < 12)
 			{
 				gettimeofday(&tempInitial , NULL);
-				sleep(1);
+				//sleep(1);
 					for(int k = 0; k<V-1 ; k++)
 					{
 						if ((pid = fork()) == 0)
@@ -218,6 +218,7 @@ if (argc > 1)
 							}
 						}
 					}
+				sleep(1);
 				sem_wait(sm);
 					memcpy(&voitcpy,voitures,sizeof(struct F1)*21);
 				sem_post(sm);
