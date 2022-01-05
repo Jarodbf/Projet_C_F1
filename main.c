@@ -33,6 +33,10 @@ if(strcmp(NumCourse , "C1")!=0)
 				classment[y] = classment[20];
 			}
 		}
+		if(voitures[i].temp[4]==500)
+			{
+				voitures[i].temp[4] = 0;
+			}
 	}
 }
 else
@@ -98,25 +102,60 @@ void Ecrit(char *tour){
 	char buff[1024];
 	int f;
 	if(strcmp(tour , "P1")==0){
-    f = open("P1.txt", O_WRONLY); 
+		if(!(f = open("P1.txt", O_WRONLY)))
+		{}
+		else{
+			system("touch P1.txt");
+			f = open("P1.txt", O_WRONLY);
+		}
 	}
 	else if(strcmp(tour , "P2")==0){
-    f = open("P2.txt", O_WRONLY); 
+		if(!(f = open("P2.txt", O_WRONLY)))
+		{}
+		else{
+			system("touch P2.txt");
+			f = open("P2.txt", O_WRONLY);
+			}
 	}
 	else if(strcmp(tour , "P3")==0){
-    f = open("P3.txt", O_WRONLY); 
+		if(!(f = open("P3.txt", O_WRONLY)))
+		{}
+		else{
+			system("touch P3.txt");
+			f = open("P3.txt", O_WRONLY);
+			}
 	}
-	else if(strcmp(tour ,"Q1")==0){
-    f = open("Q1.txt", O_WRONLY); 
+	else if(strcmp(tour , "Q1")==0){
+		if(!(f = open("Q1.txt", O_WRONLY)))
+		{}
+		else{
+			system("touch Q1.txt");
+			f = open("Q1.txt", O_WRONLY);
+			}
 	}
 	else if(strcmp(tour , "Q2")==0){
-    f = open("Q2.txt", O_WRONLY); 
+		if(!(f = open("Q2.txt", O_WRONLY)))
+		{}
+		else{
+			system("touch Q2.txt");
+			f = open("Q2.txt", O_WRONLY);
+			}
 	}
 	else if(strcmp(tour , "Q3")==0){
-    f = open("Q3.txt", O_WRONLY); 
+		if(!(f = open("Q3.txt", O_WRONLY)))
+		{}
+		else{
+			system("touch Q3.txt");
+			f = open("Q3.txt", O_WRONLY);
+			}
 	}
 	else if(strcmp(tour , "C1")==0){
-	f = open("C1.txt", O_WRONLY); 
+		if(!(f = open("C1.txt", O_WRONLY)))
+		{}
+		else{
+			system("touch C1.txt");
+			f = open("C1.txt", O_WRONLY);
+			}
 	}
     if(f < 0){ // vérifie que le fichier se soit ouvert
         perror("file ");
@@ -141,75 +180,86 @@ sem_init(&sm, 0, 1);
 srand(time(NULL));
 if (argc > 1)
 {
-	int NumVoit[20] = {44, 77, 11, 33, 3, 4, 5, 18, 14, 31, 16, 55, 10, 22, 7, 99, 9, 47, 6, 63}; 
-	connectShm();
-	for(int k = 0; k<V-1 ; k++)
+	if (strcmp(argv[1],"C1")==0 || strcmp(argv[1],"P1")==0 || strcmp(argv[1],"P2")==0 || strcmp(argv[1],"P3")==0 || strcmp(argv[1],"Q1")==0 || strcmp(argv[1],"Q2")==0 || strcmp(argv[1],"Q3")==0)
 	{
-		voitures[k].lost = 0;
-		voitures[k].id = NumVoit[k];
-	}
-	V = getTour(argv[1]);
-	for(int i=0;i<4;i++){
-	voitures[20].BStemp[i] = 999;
-	}
-	for(int k = 0; k<V-1 ; k++)
-	{
-		voitures[k].statut = 'E';
-		voitures[k].temp[5] = 0;
-	}
-	struct timeval tempInitial , tempFinal;
-	int seconde = 0;
-	if (strcmp(argv[1],"C1")!=0)
-	{
-		
-		while(seconde < 12)
+		int NumVoit[20] = {44, 77, 11, 33, 3, 4, 5, 18, 14, 31, 16, 55, 10, 22, 7, 99, 9, 47, 6, 63}; 
+		connectShm();
+		for(int k = 0; k<V-1 ; k++)
 		{
-			sem_wait(&s);
-			gettimeofday(&tempInitial , NULL);
-			sleep(1);
-				for(int k = 0; k<V-1 ; k++)
-				{
-					if (voitures[k].lost == 0)
-					{
-					essaiQualifCourse(k);
-					}
-				}
-				sem_post(&s);
-				memcpy(&voitcpy,voitures,sizeof(struct F1)*21);
-			gettimeofday(&tempFinal , NULL);
-			seconde += (tempFinal.tv_sec - tempInitial.tv_sec);
-			 
-			afficheTab(argv[1]);
-			Ecrit(argv[1]);
-			printf("\nTotal time taken is : %d seconds and %lu microseconds\n",(seconde),(tempFinal.tv_usec - tempInitial.tv_usec));
+			voitures[k].lost = 0;
+			voitures[k].id = NumVoit[k];
 		}
+		V = getTour(argv[1]);
+		for(int i=0;i<4;i++){
+		voitures[20].BStemp[i] = 999;
+		}
+		for(int k = 0; k<V-1 ; k++)
+		{
+			voitures[k].statut = 'E';
+			voitures[k].temp[5] = 0;
+		}
+		struct timeval tempInitial , tempFinal;
+		int seconde = 0;
+		if (strcmp(argv[1],"C1")!=0)
+		{
+			
+			while(seconde < 12)
+			{
+				sem_wait(&s);
+				gettimeofday(&tempInitial , NULL);
+				sleep(1);
+					for(int k = 0; k<V-1 ; k++)
+					{
+						if (voitures[k].lost == 0)
+						{
+						essaiQualifCourse(k);
+						}
+					}
+					sem_post(&s);
+					memcpy(&voitcpy,voitures,sizeof(struct F1)*21);
+				gettimeofday(&tempFinal , NULL);
+				seconde += (tempFinal.tv_sec - tempInitial.tv_sec);
+				 
+				afficheTab(argv[1]);
+				Ecrit(argv[1]);
+				printf("\nTotal time taken is : %d seconds and %lu microseconds\n",(seconde),(tempFinal.tv_usec - tempInitial.tv_usec));
+			}
+		}
+		else
+		{
+			for(int i=0;i<3;i++)
+			{
+				sem_wait(&s);
+				gettimeofday(&tempInitial , NULL);
+				sleep(1);
+					for(int k = 0; k<V-1 ; k++)
+					{
+					CourseV(k);
+					}
+					sem_post(&s);
+					memcpy(&voitcpy,voitures,sizeof(struct F1)*21);
+				gettimeofday(&tempFinal , NULL);
+				seconde += (tempFinal.tv_sec - tempInitial.tv_sec);
+				 
+				afficheTab(argv[1]);
+				Ecrit(argv[1]);
+				printf("\nTours numéro: %d\n",i+1);
+			}
+		}
+		disconectShm();
 	}
 	else
 	{
-		for(int i=0;i<3;i++)
-		{
-			sem_wait(&s);
-			gettimeofday(&tempInitial , NULL);
-			sleep(1);
-				for(int k = 0; k<V-1 ; k++)
-				{
-				CourseV(k);
-				}
-				sem_post(&s);
-				memcpy(&voitcpy,voitures,sizeof(struct F1)*21);
-			gettimeofday(&tempFinal , NULL);
-			seconde += (tempFinal.tv_sec - tempInitial.tv_sec);
-			 
-			afficheTab(argv[1]);
-			Ecrit(argv[1]);
-			printf("\nTours numéro: %d\n",i+1);
-		}
+		printf("Maivais argument veuillez entrée un des suivant: P1, P2, P3, Q1, Q2, Q3, C1");
 	}
-	disconectShm();
+}
+else
+{
+	printf("Veuillez entrée un argument: P1, P2, P3, Q1, Q2, Q3, C1");
 }
  //afiche le tableau des données
 sem_destroy(&s); 
-sem_destroy(&sm); 
+sem_destroy(&sm);
 return 0;
 }
 

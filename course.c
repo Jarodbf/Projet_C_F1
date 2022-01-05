@@ -31,6 +31,10 @@ void essaiQualifCourse(int k)
 						if (geneTemp(getpid())+geneTemp(getpid())+geneTemp(getpid())+geneTemp(getpid()) == 143)
 						{
 							voitures[k].statut = 'O';
+							if(voitures[k].temp[4]==0)
+							{
+								voitures[k].temp[4] = 500;
+							}
 						}
 						if (voitures[k].statut == 'E')
 						{
@@ -76,7 +80,7 @@ void essaiQualifCourse(int k)
 	else
 	{
 	wait(NULL);
-	}	
+	}
 }
 
 void CourseV(int k)
@@ -180,7 +184,7 @@ int getTour(char * tour){
 		{
 			fichier = open("Q3.txt", O_RDONLY );
 		}
-		char* str = malloc(sizeof(char)*500);
+		char* str = malloc(sizeof(char)*50);
 		int red;
 		char *classement;
 		red = read(fichier, str, sizeof(str)*30); 
