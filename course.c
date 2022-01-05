@@ -1,90 +1,206 @@
-#include <time.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <semaphore.h>
 
-# define V  20
-# define T  5
+struct F1 voitcpy[21];
 
-struct F1 {
-	int id;
-	float temp[4];
-	float BStemp[4];
-	char statut; //S=stand O=out E=enCourse
-};
+sem_t s, sm;
 
-struct F1 voiture[V];
-
-int Bid[4];
-float geneTemp (){
-	float r;
-    r = (((rand())%16000)+25000);
-return r/1000;
+int geneTemp (int x){
+	int r=(abs(rand()*x)% (40000 -25000 +1))+25000;
+	return  r/1000;
 }
 
-void afficheTab() {
-printf(" IDV |  BS1   |  BS2   |  BS3   |  BT   |\n\n");
-for(int k=0;k<V;k++)//voiture
-    {
-       printf(" F%2d | %3.2fs | %3.2fs | %3.2fs | %dm%2ds |\n",voiture[k].id,voiture[k].temp[0],voiture[k].temp[1],voiture[k].temp[2],((int)voiture[k].temp[3]/60),((int)voiture[k].temp[3]%60));
-    }
-	printf("--------------------------------------------------------------\n");
-	printf(" F%2d | %3.2fs | F%2d | %3.2fs | F%2d | %3.2fs |\n",voiture[Bid[0]].id,voiture[0].BStemp[0],voiture[Bid[1]].id,voiture[0].BStemp[1],voiture[Bid[2]].id,voiture[0].BStemp[2]);
-}
-
-
-int main()
+void essaiQualifCourse(int k)
 {
-srand(time(NULL));
-int NumVoit[20] = {44, 77, 11, 33, 3, 4, 5, 18, 14, 31, 16, 55, 10, 22, 7, 99, 9, 47, 6, 63};
-for(int i=0;i<20;i++){
-	voiture[i].id = NumVoit[i];
-}
+	int pid; 
+	if ((pid = fork()) == 0)
+		{
+			sem_wait(&sm);
+					if (voitures[k].statut != 'O')
+					{
+						if (voitures[k].statut == 'S')
+						{
+							voitures[k].statut = 'E';
+						}
+						if (geneTemp(getpid()) == 39)
+						{
+							voitures[k].statut = 'S';
+						}
+						if (geneTemp(getpid())+geneTemp(getpid())+geneTemp(getpid())+geneTemp(getpid()) == 143)
+						{
+							voitures[k].statut = 'O';
+							if(voitures[k].temp[4]==0)
+							{
+								voitures[k].temp[4] = 500;
+							}
+						}
+						if (voitures[k].statut == 'E')
+						{
+							voitures[k].temp[0] = geneTemp(getpid());
+							
+							voitures[k].temp[1] = geneTemp(getpid());
+									
+							voitures[k].temp[2] = geneTemp(getpid());
+									
+							voitures[k].temp[3] = voitures[k].temp[0] + voitures[k].temp[1] +voitures[k].temp[2];
+									
+							voitures[k].temp[4] = voitures[k].temp[0] + voitures[k].temp[1] +voitures[k].temp[2];
+							if(voitures[k].temp[4] > voitcpy[k].temp[4] && voitcpy[k].temp[4] != 0)
+							{
+								voitures[k].temp[4] = voitcpy[k].temp[4];
+							}
 
-float tempT;
-for(int i=0;i<T;i++) //tour
-{
-    for(int j=0;j<3;j++)// secteurs
-    {
-        for(int k=0;k<V;k++)//voiture
-        {
-		if(i==0){
-           		voiture[k].temp[j] = geneTemp();
+							if(voitures[20].BStemp[0]>voitures[k].temp[0])
+							{
+								voitures[20].BStemp[0] = voitures[k].temp[0];
+								voitures[20].idBst[0] = voitures[k].id;
+							}
+							if(voitures[20].BStemp[1]>voitures[k].temp[1])
+							{
+								voitures[20].BStemp[1] = voitures[k].temp[1];
+								voitures[20].idBst[1] = voitures[k].id;
+							}
+							if(voitures[20].BStemp[2]>voitures[k].temp[2])
+							{
+								voitures[20].BStemp[2] = voitures[k].temp[2];
+								voitures[20].idBst[2] = voitures[k].id;
+							}
+							if(voitures[20].BStemp[3]>voitures[k].temp[3])
+							{
+								voitures[20].BStemp[3] = voitures[k].temp[3];
+								voitures[20].idBst[3] = voitures[k].id;
+							}
+						}
+					}
+					sem_post(&sm);
+					exit(1);
 		}
-		else{
-			tempT=geneTemp();
-			if(tempT>voiture[k].temp[j]){
-			voiture[k].temp[j] = tempT;
+	else
+	{
+	wait(NULL);
+	}
+}
+
+void CourseV(int k)
+{
+	int pid;
+	if ((pid = fork()) == 0)
+		{
+			sem_wait(&sm);
+			do{
+					if (voitures[k].statut != 'O')
+					{
+						if (voitures[k].statut == 'S')
+						{
+							voitures[k].statut = 'E';
+						}
+						if (geneTemp(getpid()) == 36)
+						{
+							voitures[k].statut = 'S';
+							voitures[k].temp[5] += 3;
+						}
+						if (geneTemp(getpid())+geneTemp(getpid())+geneTemp(getpid())+geneTemp(getpid()) == 143)
+						{
+							voitures[k].statut = 'O';
+							voitures[k].temp[5] += 500;
+						}
+						if (voitures[k].statut == 'E')
+						{
+							voitures[k].temp[0] = geneTemp(getpid());
+							
+							voitures[k].temp[1] = geneTemp(getpid());
+									
+							voitures[k].temp[2] = geneTemp(getpid());
+									
+							voitures[k].temp[3] = voitures[k].temp[0] + voitures[k].temp[1] +voitures[k].temp[2];
+									
+							voitures[k].temp[4] = voitures[k].temp[0] + voitures[k].temp[1] +voitures[k].temp[2];
+							
+							voitures[k].temp[5] += voitures[k].temp[3];
+							if(voitures[k].temp[4] > voitcpy[k].temp[4] && voitcpy[k].temp[4] != 0)
+							{
+								voitures[k].temp[4] = voitcpy[k].temp[4];
+							}
+
+							if(voitures[20].BStemp[0]>voitures[k].temp[0])
+							{
+								voitures[20].BStemp[0] = voitures[k].temp[0];
+								voitures[20].idBst[0] = voitures[k].id;
+							}
+							if(voitures[20].BStemp[1]>voitures[k].temp[1])
+							{
+								voitures[20].BStemp[1] = voitures[k].temp[1];
+								voitures[20].idBst[1] = voitures[k].id;
+							}
+							if(voitures[20].BStemp[2]>voitures[k].temp[2])
+							{
+								voitures[20].BStemp[2] = voitures[k].temp[2];
+								voitures[20].idBst[2] = voitures[k].id;
+							}
+							if(voitures[20].BStemp[3]>voitures[k].temp[3])
+							{
+								voitures[20].BStemp[3] = voitures[k].temp[3];
+								voitures[20].idBst[3] = voitures[k].id;
+							}
+						}
+					}
+			}while(voitures[k].statut == 'S');
+			sem_post(&sm);
+			exit(1);
+		
+		}	
+	else
+	{
+	wait(NULL);
+	}			
+}
+
+int getTour(char * tour){
+	int V = 21;
+	if (strcmp(tour,"Q2")==0 || strcmp(tour,"Q3")==0 || strcmp(tour,"C1")==0)
+	{
+		int fichier =0;
+		if (strcmp(tour,"Q2")==0)
+		{
+			V = V-5;
+			fichier = open("Q1.txt", O_RDONLY );
+			for(int k = 15; k<20 ; k++)
+			{
+				voitures[k].lost = 1;
 			}
 		}
-        }
-    }
-
-    for(int k=0;k<V;k++)//comptage temps tot
-    {
-	    if(i==0){
-		voiture[k].temp[3] = voiture[k].temp[0]+voiture[k].temp[1]+voiture[k].temp[2];
-	    }
-	    else{
-		tempT = voiture[k].temp[0]+voiture[k].temp[1]+voiture[k].temp[2];
-		if(tempT>voiture[k].temp[3]){
-		    voiture[k].temp[3] = tempT;
-		}
-       	 }
-    }
-	
-	for(int j=0;j<3;j++)// secteurs
-    {
-		float cache = 40.00;
-        for(int k=0;k<V;k++)// meilleur bstemp1 2 3 voiture | not semaphore 
-        {
-			if(cache>voiture[k].temp[j]){
-			voiture[0].BStemp[j] = voiture[k].temp[j];
-			cache = voiture[k].temp[j];
-			Bid[j] = k;
+		else if(strcmp(tour,"Q3")==0)
+		{
+			V = V-10;
+			fichier = open("Q2.txt", O_RDONLY );
+			for(int k = 10; k<20 ; k++)
+			{
+				voitures[k].lost = 1;
 			}
 		}
-    }
-}
-afficheTab();
+		else
+		{
+			fichier = open("Q3.txt", O_RDONLY );
+		}
+		char* str = malloc(sizeof(char)*50);
+		int red;
+		char *classement;
+		red = read(fichier, str, sizeof(str)*30); 
+		close(fichier);
+		int pos[20];
+		int i=0;
+		classement = strtok(str,"\n");
+		while(classement!=NULL){
+	   		pos[i] = atoi(classement);
+			classement = strtok(NULL,"\n"); // prochaine phrase si présente
+			i++;
+		}
+		for(int k = 0; k<20 ; k++)
+		{
+			voitures[k].id = pos[k];
+		}
+	}
+	return V;
 }
