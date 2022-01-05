@@ -5,8 +5,6 @@
 
 struct F1 voitcpy[21];
 
-sem_t s, sm;
-
 int geneTemp (int x){
 	int r=(abs(rand()*x)% (40000 -25000 +1))+25000;
 	return  r/1000;
@@ -14,11 +12,8 @@ int geneTemp (int x){
 
 void essaiQualifCourse(int k)
 {
-	int pid; 
-	if ((pid = fork()) == 0)
-		{
-			sem_wait(&sm);
-					if (voitures[k].statut != 'O')
+	sem_wait(sm);
+				if (voitures[k].statut != 'O')
 					{
 						if (voitures[k].statut == 'S')
 						{
@@ -74,21 +69,17 @@ void essaiQualifCourse(int k)
 							}
 						}
 					}
-					sem_post(&sm);
+					else
+					{
+						voitures[k].temp[4] = 500;
+					}
+		sem_post(sm);
 					exit(1);
-		}
-	else
-	{
-	wait(NULL);
-	}
 }
 
 void CourseV(int k)
 {
-	int pid;
-	if ((pid = fork()) == 0)
-		{
-			sem_wait(&sm);
+			sem_wait(sm);
 			do{
 					if (voitures[k].statut != 'O')
 					{
@@ -147,14 +138,10 @@ void CourseV(int k)
 						}
 					}
 			}while(voitures[k].statut == 'S');
-			sem_post(&sm);
+			sem_post(sm);
 			exit(1);
 		
-		}	
-	else
-	{
-	wait(NULL);
-	}			
+			
 }
 
 int getTour(char * tour){

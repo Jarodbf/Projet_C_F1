@@ -12,6 +12,7 @@
 #include "SharedMemory.h"
 #include "course.c"
 #include <fcntl.h>
+#include <semaphore.h>
 
 int V = 21;
 
@@ -175,8 +176,6 @@ void Ecrit(char *tour){
 }
 int main(int argc,char *argv[])
 {
-sem_init(&s, 0, 1);
-sem_init(&sm, 0, 1);
 srand(time(NULL));
 if (argc > 1)
 {
@@ -184,6 +183,7 @@ if (argc > 1)
 	{
 		int NumVoit[20] = {44, 77, 11, 33, 3, 4, 5, 18, 14, 31, 16, 55, 10, 22, 7, 99, 9, 47, 6, 63}; 
 		connectShm();
+		sem_init(sm, 1, 1);
 		for(int k = 0; k<V-1 ; k++)
 		{
 			voitures[k].lost = 0;
@@ -200,23 +200,27 @@ if (argc > 1)
 		}
 		struct timeval tempInitial , tempFinal;
 		int seconde = 0;
+		int pid; 
 		if (strcmp(argv[1],"C1")!=0)
 		{
 			
 			while(seconde < 12)
 			{
-				sem_wait(&s);
 				gettimeofday(&tempInitial , NULL);
 				sleep(1);
 					for(int k = 0; k<V-1 ; k++)
 					{
-						if (voitures[k].lost == 0)
+						if ((pid = fork()) == 0)
 						{
-						essaiQualifCourse(k);
+							if (voitures[k].lost == 0)
+							{
+							essaiQualifCourse(k);
+							}
 						}
 					}
-					sem_post(&s);
+				sem_wait(sm);
 					memcpy(&voitcpy,voitures,sizeof(struct F1)*21);
+				sem_post(sm);
 				gettimeofday(&tempFinal , NULL);
 				seconde += (tempFinal.tv_sec - tempInitial.tv_sec);
 				 
@@ -229,15 +233,18 @@ if (argc > 1)
 		{
 			for(int i=0;i<3;i++)
 			{
-				sem_wait(&s);
 				gettimeofday(&tempInitial , NULL);
 				sleep(1);
 					for(int k = 0; k<V-1 ; k++)
 					{
-					CourseV(k);
+						if ((pid = fork()) == 0)
+						{
+							CourseV(k);
+						}
 					}
-					sem_post(&s);
-					memcpy(&voitcpy,voitures,sizeof(struct F1)*21);
+				sem_wait(sm);
+				memcpy(&voitcpy,voitures,sizeof(struct F1)*21);
+				sem_post(sm);
 				gettimeofday(&tempFinal , NULL);
 				seconde += (tempFinal.tv_sec - tempInitial.tv_sec);
 				 
@@ -250,7 +257,7 @@ if (argc > 1)
 	}
 	else
 	{
-		printf("Maivais argument veuillez entrée un des suivant: P1, P2, P3, Q1, Q2, Q3, C1");
+		printf("Mauvais argument veuillez entrée un des suivant: P1, P2, P3, Q1, Q2, Q3, C1");
 	}
 }
 else
@@ -258,8 +265,7 @@ else
 	printf("Veuillez entrée un argument: P1, P2, P3, Q1, Q2, Q3, C1");
 }
  //afiche le tableau des données
-sem_destroy(&s); 
-sem_destroy(&sm);
+sem_destroy(sm);
 return 0;
 }
 
