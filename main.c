@@ -27,6 +27,10 @@ if(strcmp(NumCourse , "C1")!=0)
 	memcpy(&classment,voitcpy,sizeof(struct F1)*21);
 	for (int i=0; i<V-1;i++){
 		for (int y=i+1; y<V-1;y++){
+			if(classment[i].temp[4]==0)
+			{
+				classment[i].temp[4] = 500;
+			}
 			if(classment[i].temp[4]>classment[y].temp[4])
 			{
 				classment[20] = classment[i];
@@ -34,9 +38,9 @@ if(strcmp(NumCourse , "C1")!=0)
 				classment[y] = classment[20];
 			}
 		}
-		if(voitures[i].temp[4]==500)
+		if(classment[i].temp[4]==500)
 			{
-				voitures[i].temp[4] = 0;
+				classment[i].temp[4] = 0;
 			}
 	}
 }
@@ -207,7 +211,6 @@ if (argc > 1)
 			while(seconde < 12)
 			{
 				gettimeofday(&tempInitial , NULL);
-				//sleep(1);
 					for(int k = 0; k<V-1 ; k++)
 					{
 						if ((pid = fork()) == 0)
@@ -235,7 +238,6 @@ if (argc > 1)
 			for(int i=0;i<3;i++)
 			{
 				gettimeofday(&tempInitial , NULL);
-				sleep(1);
 					for(int k = 0; k<V-1 ; k++)
 					{
 						if ((pid = fork()) == 0)
@@ -243,6 +245,7 @@ if (argc > 1)
 							CourseV(k);
 						}
 					}
+				sleep(1);
 				sem_wait(sm);
 				memcpy(&voitcpy,voitures,sizeof(struct F1)*21);
 				sem_post(sm);
