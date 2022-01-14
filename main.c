@@ -191,6 +191,9 @@ if (argc > 1)
 		int NumVoit[20] = {44, 77, 11, 33, 3, 4, 5, 18, 14, 31, 16, 55, 10, 22, 7, 99, 9, 47, 6, 63}; 
 		connectShm();
 		sem_init(sm, 1, 1);
+		sem_init(sm_reader, 1, 0);
+		*count_parent = 0;
+
 		for(int k = 0; k<V-1 ; k++)
 		{
 			voitures[k].lost = 0;
@@ -211,23 +214,25 @@ if (argc > 1)
 		if (strcmp(argv[1],"C1")!=0)
 		{
 			
-			while(seconde < 12)
+			while(seconde < 4)
 			{
 				gettimeofday(&tempInitial , NULL);
+				sleep(1);
 					for(int k = 0; k<V-1 ; k++)
 					{
 						if ((pid = fork()) == 0)
 						{
 							if (voitures[k].lost == 0)
 							{
-							essaiQualifCourse(k);
+								essaiQualifCourse(k);
+								
 							}
 						}
 					}
-				sleep(1);
-				sem_wait(sm);
+				//sleep(1);
+				sem_wait(sm_reader);
 					memcpy(&voitcpy,voitures,sizeof(struct F1)*21);
-				sem_post(sm);
+				sem_post(sm_reader);
 				gettimeofday(&tempFinal , NULL);
 				seconde += (tempFinal.tv_sec - tempInitial.tv_sec);
 				 
@@ -249,9 +254,9 @@ if (argc > 1)
 						}
 					}
 				sleep(1);
-				sem_wait(sm);
-				memcpy(&voitcpy,voitures,sizeof(struct F1)*21);
-				sem_post(sm);
+				sem_wait(sm_reader);
+					memcpy(&voitcpy,voitures,sizeof(struct F1)*21);
+				sem_post(sm_reader);
 				gettimeofday(&tempFinal , NULL);
 				seconde += (tempFinal.tv_sec - tempInitial.tv_sec);
 				 

@@ -73,7 +73,15 @@ void essaiQualifCourse(int k)
 					{
 						voitures[k].temp[4] = 500;
 					}
-		sem_post(sm);
+					if(*count_parent == 19)
+					{
+						sem_post(sm_reader);
+					}
+					else
+					{
+						(*count_parent)++;
+					}
+					sem_post(sm);
 					exit(1);
 }
 
@@ -138,7 +146,16 @@ void CourseV(int k)
 						}
 					}
 			}while(voitures[k].statut == 'S');
+			if(*count_parent == 19)
+					{
+						sem_post(sm_reader);
+					}
+					else
+					{
+						(*count_parent)++;
+					}
 			sem_post(sm);
+
 			exit(1);
 		
 			
