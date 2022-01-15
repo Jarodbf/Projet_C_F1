@@ -190,8 +190,8 @@ if (argc > 1)
 	{
 		int NumVoit[20] = {44, 77, 11, 33, 3, 4, 5, 18, 14, 31, 16, 55, 10, 22, 7, 99, 9, 47, 6, 63}; 
 		connectShm();
-		sem_init(sm, 1, 1);
-		sem_init(sm_reader, 1, 0);
+		sem_init(sm, 1, 1);//initialise la sémaphore des fils a 1 (passant de base)
+		sem_init(sm_reader, 1, 0);//initialise la sémaphore du pêre a 0 (bloquand de base)
 
 		for(int k = 0; k<V-1 ; k++)
 		{
@@ -213,10 +213,10 @@ if (argc > 1)
 		if (strcmp(argv[1],"C1")!=0)
 		{
 			
-			while(seconde < 4)
+			while(seconde < 4)//Le nombre de secondes que les voitures vont tourner
 			{
-				*count_parent = 0;
-				gettimeofday(&tempInitial , NULL);
+				*count_parent = 0;//Mets le compteur sert a débloquer la sémaphore du père a zero
+				gettimeofday(&tempInitial , NULL);//temps avant l'execution du tour
 				sleep(1);
 					for(int k = 0; k<V-1 ; k++)
 					{
@@ -230,11 +230,12 @@ if (argc > 1)
 						}
 					}
 				//sleep(1);
-				sem_wait(sm_reader);
-					memcpy(&voitcpy,voitures,sizeof(struct F1)*21);
-				sem_post(sm_reader);
-				gettimeofday(&tempFinal , NULL);
-				seconde += (tempFinal.tv_sec - tempInitial.tv_sec);
+				sem_wait(sm_reader);//sémaphore du père
+					//S.C.
+					memcpy(&voitcpy,voitures,sizeof(struct F1)*21);//Le père lis la mémoire partagée voitures
+				sem_post(sm_reader);//sémaphore du père
+				gettimeofday(&tempFinal , NULL);//temps après l'execution du tour
+				seconde += (tempFinal.tv_sec - tempInitial.tv_sec);// additionne les temps
 				 
 				afficheTab(argv[1]);
 				Ecrit(argv[1]);
@@ -245,8 +246,8 @@ if (argc > 1)
 		{
 			for(int i=0;i<3;i++)
 			{
-				*count_parent = 0;
-				gettimeofday(&tempInitial , NULL);
+				*count_parent = 0;//Mets le compteur sert a débloquer la sémaphore du père a zero
+				gettimeofday(&tempInitial , NULL);//temps avant l'execution du tour
 					for(int k = 0; k<V-1 ; k++)
 					{
 						if ((pid = fork()) == 0)
@@ -255,10 +256,11 @@ if (argc > 1)
 						}
 					}
 				sleep(1);
-				sem_wait(sm_reader);
-					memcpy(&voitcpy,voitures,sizeof(struct F1)*21);
-				sem_post(sm_reader);
-				gettimeofday(&tempFinal , NULL);
+				sem_wait(sm_reader);//sémaphore du père
+					//S.C.
+					memcpy(&voitcpy,voitures,sizeof(struct F1)*21);//Le père lis la mémoire partagée voitures
+				sem_post(sm_reader);//sémaphore du père
+				gettimeofday(&tempFinal , NULL);//temps après l'execution du tour
 				seconde += (tempFinal.tv_sec - tempInitial.tv_sec);
 				 
 				afficheTab(argv[1]);
@@ -277,7 +279,8 @@ else
 {
 	printf("Veuillez entrée un argument: P1, P2, P3, Q1, Q2, Q3, C1\n");
 }
- //afiche le tableau des données
+//détruit les sémaphores
 sem_destroy(sm);
+sem_destroy(sm_reader);
 return 0;
 }

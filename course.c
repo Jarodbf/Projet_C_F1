@@ -12,7 +12,8 @@ int geneTemp (int x){
 
 void essaiQualifCourse(int k)
 {
-	sem_wait(sm);
+	sem_wait(sm);//sémaphore du fils
+	//S.C.
 				if (voitures[k].statut != 'O')
 					{
 						if (voitures[k].statut == 'S')
@@ -73,21 +74,22 @@ void essaiQualifCourse(int k)
 					{
 						voitures[k].temp[4] = 500;
 					}
-					if(*count_parent == 19)
+					if(*count_parent == 19)//si tout les fils sont passés alors débloque le père
 					{
-						sem_post(sm_reader);
+						sem_post(sm_reader);//sémapore du père
 					}
-					else
+					else//si tout les fils ne sont pas encore passés alors incrémentation du compteur
 					{
 						(*count_parent)++;
 					}
-					sem_post(sm);
+					sem_post(sm);//sémaphore du fils
 					exit(1);
 }
 
 void CourseV(int k)
 {
-			sem_wait(sm);
+			sem_wait(sm);//sémaphore du fils
+			//S.C.
 			do{
 					if (voitures[k].statut != 'O')
 					{
@@ -146,15 +148,15 @@ void CourseV(int k)
 						}
 					}
 			}while(voitures[k].statut == 'S');
-			if(*count_parent == 19)
+			if(*count_parent == 19)//si tout les fils sont passés alors débloque le père
 					{
-						sem_post(sm_reader);
+						sem_post(sm_reader);//sémapore du père
 					}
-					else
+					else//si tout les fils ne sont pas encore passés alors incrémentation du compteur
 					{
 						(*count_parent)++;
 					}
-			sem_post(sm);
+			sem_post(sm);//sémaphore du fils
 
 			exit(1);
 		
