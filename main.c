@@ -192,7 +192,6 @@ if (argc > 1)
 		connectShm();
 		sem_init(sm, 1, 1);
 		sem_init(sm_reader, 1, 0);
-		*count_parent = 0;
 
 		for(int k = 0; k<V-1 ; k++)
 		{
@@ -216,6 +215,7 @@ if (argc > 1)
 			
 			while(seconde < 4)
 			{
+				*count_parent = 0;
 				gettimeofday(&tempInitial , NULL);
 				sleep(1);
 					for(int k = 0; k<V-1 ; k++)
@@ -245,6 +245,7 @@ if (argc > 1)
 		{
 			for(int i=0;i<3;i++)
 			{
+				*count_parent = 0;
 				gettimeofday(&tempInitial , NULL);
 					for(int k = 0; k<V-1 ; k++)
 					{
