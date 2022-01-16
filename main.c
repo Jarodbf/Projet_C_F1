@@ -26,7 +26,7 @@ if(strcmp(NumCourse , "C1")!=0)
 	printf("%*s | %*s | %*s | %*s | %*s | %*s | %*s | %*s | %*s |\n",5,"N°",6,"IDV",5,"S1",5,"S2",5,"S3",6,"TEMP",5,"BTEMP",5,"STATUS",5,"ECART");
 	printf("‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾\n");
 	memcpy(&classment,voitcpy,sizeof(struct F1)*21);
-	for (int i=0; i<V-1;i++){
+	for (int i=0; i<V-1;i++){ // classement des voitures
 		for (int y=i+1; y<V-1;y++){
 			if(classment[i].temp[4]==0)
 			{
@@ -50,7 +50,7 @@ else
 	printf("%*s | %*s | %*s | %*s | %*s | %*s | %*s | %*s | %*s | %*s |\n",5,"N°",6,"IDV",5,"S1",5,"S2",5,"S3",6,"TEMP",5,"BTEMP",5,"STATUS",5,"TEMP TOT",5,"ECART");
 	printf("‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾\n");
 	memcpy(&classment,voitcpy,sizeof(struct F1)*21);
-	for (int i=0; i<V-1;i++){
+	for (int i=0; i<V-1;i++){ // classement des voitures
 		for (int y=i+1; y<V-1;y++){
 				if(classment[i].temp[5]>classment[y].temp[5])
 				{
@@ -67,7 +67,7 @@ else
 	}
 }
 
-for(int k=0;k<V-1;k++)//voiture
+for(int k=0;k<V-1;k++)//affichage du classement
     {
 		if (classment[k].lost == 0){
 			if(strcmp(NumCourse , "C1")==0)
@@ -106,7 +106,7 @@ for(int k=0;k<V-1;k++)//voiture
 	printf("--------------------------------------------------------------\n");
 
 }
-void Ecrit(char *tour){
+void Ecrit(char *tour){ // ecriture sur fichier des classement
 	char buff[1024];
 	int f;
 	if(strcmp(tour , "P1")==0){
@@ -186,6 +186,7 @@ int main(int argc,char *argv[])
 srand(time(NULL));
 if (argc > 1)
 {
+	// if anti erreur n'accepte que ces argument
 	if (strcmp(argv[1],"C1")==0 || strcmp(argv[1],"P1")==0 || strcmp(argv[1],"P2")==0 || strcmp(argv[1],"P3")==0 || strcmp(argv[1],"Q1")==0 || strcmp(argv[1],"Q2")==0 || strcmp(argv[1],"Q3")==0)
 	{
 		int NumVoit[20] = {44, 77, 11, 33, 3, 4, 5, 18, 14, 31, 16, 55, 10, 22, 7, 99, 9, 47, 6, 63}; 
@@ -193,16 +194,16 @@ if (argc > 1)
 		sem_init(sm, 1, 1);//initialise la sémaphore des fils a 1 (passant de base)
 		sem_init(sm_reader, 1, 0);//initialise la sémaphore du pêre a 0 (bloquand de base)
 
-		for(int k = 0; k<V-1 ; k++)
+		for(int k = 0; k<V-1 ; k++) // initialise les var
 		{
 			voitures[k].lost = 0;
 			voitures[k].id = NumVoit[k];
 		}
 		V = getTour(argv[1]);
 		for(int i=0;i<4;i++){
-		voitures[20].BStemp[i] = 999;
+		voitures[20].BStemp[i] = 999; // init
 		}
-		for(int k = 0; k<V-1 ; k++)
+		for(int k = 0; k<V-1 ; k++) // init
 		{
 			voitures[k].statut = 'E';
 			voitures[k].temp[5] = 0;
