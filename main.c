@@ -9,7 +9,7 @@
 #include <sys/wait.h>
 #include <sys/time.h>
 #include <time.h>
-#include "SharedMemory.h"
+#include "SharedMemory.c"
 #include "course.c"
 #include <fcntl.h>
 #include <semaphore.h>
