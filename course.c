@@ -14,17 +14,17 @@ void essaiQualifCourse(int k)
 {
 	sem_wait(sm);//sémaphore du fils
 	//S.C.
-				if (voitures[k].statut != 'O')
+				if (voitures[k].statut != 'O') // verifie si la voiture est out
 					{
-						if (voitures[k].statut == 'S')
+						if (voitures[k].statut == 'S') // si la voiture est au stand la remts en course
 						{
 							voitures[k].statut = 'E';
 						}
-						if (geneTemp(getpid()) == 39)
+						if (geneTemp(getpid()) == 39) // chance random d'etre au stand
 						{
 							voitures[k].statut = 'S';
 						}
-						if (geneTemp(getpid())+geneTemp(getpid())+geneTemp(getpid())+geneTemp(getpid()) == 143)
+						if (geneTemp(getpid())+geneTemp(getpid())+geneTemp(getpid())+geneTemp(getpid()) == 143) // chance d'etre out
 						{
 							voitures[k].statut = 'O';
 							if(voitures[k].temp[4]==0)
@@ -32,40 +32,40 @@ void essaiQualifCourse(int k)
 								voitures[k].temp[4] = 500;
 							}
 						}
-						if (voitures[k].statut == 'E')
+						if (voitures[k].statut == 'E') // si la voiture roule
 						{
-							voitures[k].temp[0] = geneTemp(getpid());
+							voitures[k].temp[0] = geneTemp(getpid()); // géné temp S1
 							
-							voitures[k].temp[1] = geneTemp(getpid());
+							voitures[k].temp[1] = geneTemp(getpid()); // s2
 									
-							voitures[k].temp[2] = geneTemp(getpid());
+							voitures[k].temp[2] = geneTemp(getpid()); // s3
 									
-							voitures[k].temp[3] = voitures[k].temp[0] + voitures[k].temp[1] +voitures[k].temp[2];
+							voitures[k].temp[3] = voitures[k].temp[0] + voitures[k].temp[1] +voitures[k].temp[2]; // temp total 1 tour
 									
 							voitures[k].temp[4] = voitures[k].temp[0] + voitures[k].temp[1] +voitures[k].temp[2];
 							if(voitures[k].temp[4] > voitcpy[k].temp[4] && voitcpy[k].temp[4] != 0)
 							{
-								voitures[k].temp[4] = voitcpy[k].temp[4];
+								voitures[k].temp[4] = voitcpy[k].temp[4]; // meilleur temps total d'un tour
 							}
 
 							if(voitures[20].BStemp[0]>voitures[k].temp[0])
 							{
-								voitures[20].BStemp[0] = voitures[k].temp[0];
+								voitures[20].BStemp[0] = voitures[k].temp[0]; // best S1
 								voitures[20].idBst[0] = voitures[k].id;
 							}
 							if(voitures[20].BStemp[1]>voitures[k].temp[1])
 							{
-								voitures[20].BStemp[1] = voitures[k].temp[1];
+								voitures[20].BStemp[1] = voitures[k].temp[1]; // best S2
 								voitures[20].idBst[1] = voitures[k].id;
 							}
 							if(voitures[20].BStemp[2]>voitures[k].temp[2])
 							{
-								voitures[20].BStemp[2] = voitures[k].temp[2];
+								voitures[20].BStemp[2] = voitures[k].temp[2]; // best S3
 								voitures[20].idBst[2] = voitures[k].id;
 							}
 							if(voitures[20].BStemp[3]>voitures[k].temp[3])
 							{
-								voitures[20].BStemp[3] = voitures[k].temp[3];
+								voitures[20].BStemp[3] = voitures[k].temp[3]; // best temps total
 								voitures[20].idBst[3] = voitures[k].id;
 							}
 						}
@@ -172,7 +172,7 @@ int getTour(char * tour){
 		{
 			V = V-5;
 			fichier = open("Q1.txt", O_RDONLY );
-			for(int k = 15; k<20 ; k++)
+			for(int k = 15; k<20 ; k++) // on fait plus rouler les 5 derniere voitures
 			{
 				voitures[k].lost = 1;
 			}
@@ -181,7 +181,7 @@ int getTour(char * tour){
 		{
 			V = V-10;
 			fichier = open("Q2.txt", O_RDONLY );
-			for(int k = 10; k<20 ; k++)
+			for(int k = 10; k<20 ; k++) // on fait plus rouler les 10 derniere voitures
 			{
 				voitures[k].lost = 1;
 			}
@@ -193,19 +193,19 @@ int getTour(char * tour){
 		char* str = malloc(sizeof(char)*500);
 		int red;
 		char *classement;
-		red = read(fichier, str, sizeof(str)*30); 
+		red = read(fichier, str, sizeof(str)*30); // recup le classement de la course d'avant
 		close(fichier);
 		int pos[20];
 		int i=0;
 		classement = strtok(str,"\n");
 		while(classement!=NULL){
-	   		pos[i] = atoi(classement);
+	   		pos[i] = atoi(classement); // stockage
 			classement = strtok(NULL,"\n"); // prochaine phrase si présente
 			i++;
 		}
 		for(int k = 0; k<20 ; k++)
 		{
-			voitures[k].id = pos[k];
+			voitures[k].id = pos[k]; // remets les voiture dans le bonne ordre
 		}
 	}
 	return V;
