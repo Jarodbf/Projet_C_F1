@@ -20,7 +20,7 @@ struct F1 classment[21];
 
 void afficheTab(char *NumCourse) {
 	int kTemp;
-//	system("clear");
+	system("clear");
 if(strcmp(NumCourse , "C1")!=0)
 {
 	printf("%*s | %*s | %*s | %*s | %*s | %*s | %*s | %*s | %*s |\n",5,"N°",6,"IDV",5,"S1",5,"S2",5,"S3",6,"TEMP",5,"BTEMP",5,"STATUS",5,"ECART");
